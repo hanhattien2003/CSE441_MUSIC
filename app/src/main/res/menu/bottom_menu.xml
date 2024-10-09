@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="home"
+        android:title="Trang chủ"
+        android:icon="@drawable/ic_add_circle_outline"/>
+    <item
+        android:id="search"
+        android:title="Tìm kiếm"
+        android:icon="@drawable/ic_add_circle_outline"/>
+    <item
+        android:id="library"
+        android:title="Thư viện"
+        android:icon="@drawable/ic_add_circle_outline"/>
+    <item
+        android:id="favorite"
+        android:title="Yêu thích"
+        android:icon="@drawable/ic_add_circle_outline"/>
+
+
+</menu>

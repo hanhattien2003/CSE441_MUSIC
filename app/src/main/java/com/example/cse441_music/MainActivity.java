@@ -70,4 +70,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    // Tiep tuc them xu ly tai day
 }

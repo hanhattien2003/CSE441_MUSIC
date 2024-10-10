@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cse441_music.Fragment.FavoriteFragment;
+import com.example.cse441_music.Fragment.HomeFragment;
+import com.example.cse441_music.Fragment.LibraryFragment;
+import com.example.cse441_music.Fragment.SearchFragment;
 import com.example.cse441_music.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {

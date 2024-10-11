@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Đảm bảo tiêu đề luôn hiển thị
+        // Đảm bảo BottomNavigation luôn hiển thị
         binding.bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
 
         // Xử lý sự kiện chọn item

@@ -9,4 +9,7 @@ import retrofit2.http.Query;
 public interface DeezerApi {
     @GET("search")
     Call<DeezerResponse> searchTracks(@Query("q") String query);
+
+    @GET("genre")
+    Call<DeezerResponse> getGenres();
 }

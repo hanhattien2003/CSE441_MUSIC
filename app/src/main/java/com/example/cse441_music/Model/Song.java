@@ -1,11 +1,42 @@
 package com.example.cse441_music.Model;
 
+import com.google.gson.annotations.SerializedName;
+
+
 public class Song {
+    @SerializedName("title")
     private String title;
-    private String artist;
-    private String album;
+
+    @SerializedName("artist")
+    private Artist artist;
+
+    @SerializedName("album")
+    private Album album;
+
+    @SerializedName("duration")
     private int duration;
+
+    @SerializedName("preview")
     private String filePath;
+
+    @SerializedName("cover")
+    private String coverImage;
+
+    @SerializedName("lyrics")
+    private String lyrics;
+
+    public Song(String title, Artist artist, Album album, int duration, String filePath, String coverImage, String lyrics) {
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.duration = duration;
+        this.filePath = filePath;
+        this.coverImage = coverImage;
+        this.lyrics = lyrics;
+    }
+
+    public Song() {
+    }
 
     public String getTitle() {
         return title;
@@ -15,19 +46,19 @@ public class Song {
         this.title = title;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
-    public String getAlbum() {
+    public Album getAlbum() {
         return album;
     }
 
-    public void setAlbum(String album) {
+    public void setAlbum(Album album) {
         this.album = album;
     }
 
@@ -47,14 +78,19 @@ public class Song {
         this.filePath = filePath;
     }
 
-    public Song(String title, String artist, String album, int duration, String filePath) {
-        this.title = title;
-        this.artist = artist;
-        this.album = album;
-        this.duration = duration;
-        this.filePath = filePath;
+    public String getCoverImage() {
+        return coverImage;
     }
 
-    public Song() {
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 }

@@ -2,17 +2,17 @@
     <item
         android:id="@+id/home_fragment"
         android:title="Trang chủ"
-        android:icon="@drawable/ic_add_circle_outline"/>
+        android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/search_fragment"
         android:title="Tìm kiếm"
-        android:icon="@drawable/ic_arrow_back"/>
+        android:icon="@drawable/ic_search"/>
     <item
         android:id="@+id/library_fragment"
         android:title="Thư viện"
-        android:icon="@drawable/ic_audio_track"/>
+        android:icon="@drawable/ic_music_library"/>
     <item
         android:id="@+id/favorite_fragment"
         android:title="Yêu thích"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/ic_favorite"/>
 </menu>

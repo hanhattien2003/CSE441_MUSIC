@@ -17,8 +17,7 @@
         app:title="Tên ứng dụng"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <!-- RecyclerView for the song list -->
     <androidx.recyclerview.widget.RecyclerView

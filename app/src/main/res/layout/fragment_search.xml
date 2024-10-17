@@ -15,14 +15,19 @@
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Bạn muốn nghe gì?"
+            android:hint="Nhập tên bài hát/ca sĩ"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:layout_marginBottom="6dp"/>
 
-        <View
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="wrap_content"
+            android:text="Khám phá các thể loại"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp"
+            android:id="@+id/tv_genre"/>
 
         <!-- RecyclerView hiển thị danh sách thể loại nhạc theo chiều ngang -->
         <androidx.recyclerview.widget.RecyclerView
@@ -39,10 +44,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Khám phá các thể loại"
+            android:text="Các bản nhạc bạn có thể thích"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="6dp"
+            android:id="@+id/tv_song"/>
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_search_recyclerView"

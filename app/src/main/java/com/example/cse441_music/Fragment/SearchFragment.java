@@ -1,12 +1,15 @@
 package com.example.cse441_music.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +38,8 @@ public class SearchFragment extends Fragment {
     private GenreAdapter genreAdapter;
     private GenreController genreController;
 
+    private TextView tv_genre, tv_song;
+
     public SearchFragment() {
         // Constructor trống yêu cầu
     }
@@ -54,7 +59,10 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         searchEditText = view.findViewById(R.id.search_edit_text);
-        songController = new SongController(new Song(), getActivity()); // Khởi tạo SongController
+        songController = new SongController(new Song(), getActivity());
+
+        tv_genre = view.findViewById(R.id.tv_genre);
+        tv_song = view.findViewById(R.id.tv_song);
 
         // Tải danh sách thể loại khi vào giao diện
         fetchGenres();
@@ -74,6 +82,14 @@ public class SearchFragment extends Fragment {
                     songController.fetchTracks(query, tracks -> {
                         songAdapter = new SongAdapter(tracks, getActivity());
                         recyclerView.setAdapter(songAdapter);
+
+                        tv_genre.setVisibility(View.GONE);
+                        tv_song.setVisibility(View.GONE);
+                        if (recyclerViewGenres != null) {
+                            recyclerViewGenres.setVisibility(View.GONE);
+                        }
+
+                        hideKeyboard(v);
                     });
                 } else {
                     Toast.makeText(getActivity(), "Vui lòng nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
@@ -84,6 +100,13 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     // Phương thức tải danh sách thể loại

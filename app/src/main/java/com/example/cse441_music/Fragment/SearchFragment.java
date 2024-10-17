@@ -8,15 +8,19 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cse441_music.Adapter.GenreAdapter;
 import com.example.cse441_music.Adapter.SongAdapter;
-import com.example.cse441_music.Model.Song;
+import com.example.cse441_music.Controller.GenreController;
 import com.example.cse441_music.Controller.SongController;
+import com.example.cse441_music.Model.Genre;
+import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.R;
 
 import java.util.List;
@@ -27,6 +31,10 @@ public class SearchFragment extends Fragment {
     private EditText searchEditText;
     private SongController songController;
 
+    private RecyclerView recyclerViewGenres;
+    private GenreAdapter genreAdapter;
+    private GenreController genreController;
+
     public SearchFragment() {
         // Constructor trống yêu cầu
     }
@@ -34,6 +42,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        genreController = new GenreController(); // Khởi tạo GenreController
     }
 
     @Nullable
@@ -46,6 +55,9 @@ public class SearchFragment extends Fragment {
 
         searchEditText = view.findViewById(R.id.search_edit_text);
         songController = new SongController(new Song(), getActivity()); // Khởi tạo SongController
+
+        // Tải danh sách thể loại khi vào giao diện
+        fetchGenres();
 
         // Tải khi vào giao diện
         songController.fetchTracks("a", tracks -> {
@@ -72,5 +84,24 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    // Phương thức tải danh sách thể loại
+    private void fetchGenres() {
+        genreController.fetchGenres(new GenreController.GenreControllerCallback<List<Genre>>() {
+            @Override
+            public void onSuccess(List<Genre> genreList) {
+                // Khởi tạo adapter cho RecyclerView hiển thị thể loại
+                genreAdapter = new GenreAdapter(getActivity(), genreList);
+                recyclerViewGenres = getView().findViewById(R.id.recyclerViewGenres);
+                recyclerViewGenres.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewGenres.setAdapter(genreAdapter);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(getActivity(), "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

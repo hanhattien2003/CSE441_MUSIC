@@ -1,12 +1,12 @@
 package com.example.cse441_music.Model;
 
 public class Genre {
-    private int id;
     private String name;
     private String picture;
 
-    public int getId() {
-        return id;
+    public Genre(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
     }
 
     public String getName() {

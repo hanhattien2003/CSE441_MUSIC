@@ -1,6 +1,5 @@
 package com.example.cse441_music;
 
-import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
@@ -10,14 +9,15 @@ import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
-import com.example.cse441_music.databinding.ActivityMusicPlayerBinding;
+
+import java.util.Objects;
 
 public class MusicPlayerActivity extends AppCompatActivity {
     private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
 
-    private final Handler mHideHandler = new Handler(Looper.myLooper());
+    private final Handler mHideHandler = new Handler(Objects.requireNonNull(Looper.myLooper()));
     private View mContentView, mControlsView;
     private boolean mVisible;
 //    private ActivityMusicPlayerBinding binding;

@@ -20,13 +20,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler(Looper.myLooper());
     private View mContentView, mControlsView;
     private boolean mVisible;
-    private ActivityMusicPlayerBinding binding;
+//    private ActivityMusicPlayerBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMusicPlayerBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+//        binding = ActivityMusicPlayerBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
 
         mVisible = true;
 //        mControlsView = binding.fullscreenContentControls;

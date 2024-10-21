@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Mở mặc định home_fragment khi khởi động
+
         if (savedInstanceState == null) {
             replaceFragment(new HomeFragment()); // Mở HomeFragment mặc định
         }

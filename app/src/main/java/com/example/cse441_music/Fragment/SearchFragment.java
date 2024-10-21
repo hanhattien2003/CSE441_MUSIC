@@ -1,130 +1,98 @@
 package com.example.cse441_music.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cse441_music.Adapter.GenreAdapter;
 import com.example.cse441_music.Adapter.SongAdapter;
-import com.example.cse441_music.Controller.GenreController;
-import com.example.cse441_music.Controller.SongController;
-import com.example.cse441_music.Model.Genre;
-import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.R;
+import com.example.cse441_music.Model.Song;
 
+import com.example.cse441_music.Controller.SongController;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
-    private SongAdapter songAdapter;
-    private EditText searchEditText;
-    private SongController songController;
-
-    private RecyclerView recyclerViewGenres;
-    private GenreAdapter genreAdapter;
-    private GenreController genreController;
-
-    private TextView tv_genre, tv_song;
+    private SongAdapter adapter;
+    private List<Song> songList;
+    private EditText editTextSearch;
+    private SongController songController; // Khai báo SongController
 
     public SearchFragment() {
-        // Constructor trống yêu cầu
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        genreController = new GenreController(); // Khởi tạo GenreController
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        recyclerView = view.findViewById(R.id.fragment_search_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        searchEditText = view.findViewById(R.id.search_edit_text);
-        songController = new SongController(new Song(), getActivity());
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        tv_genre = view.findViewById(R.id.tv_genre);
-        tv_song = view.findViewById(R.id.tv_song);
+        editTextSearch = view.findViewById(R.id.editTextSearch);
 
-        // Tải danh sách thể loại khi vào giao diện
-        fetchGenres();
+        songList = new ArrayList<>();
+        adapter = new SongAdapter(songList);
+        recyclerView.setAdapter(adapter);
 
-        // Tải khi vào giao diện
-        songController.fetchTracks("a", tracks -> {
-            songAdapter = new SongAdapter(tracks, getActivity());
-            recyclerView.setAdapter(songAdapter);
-        });
+        songController = new SongController(); // Khởi tạo SongController
 
-        // Thêm sự kiện lắng nghe cho EditText
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                    (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                String query = searchEditText.getText().toString();
-                if (!query.isEmpty()) {
-                    songController.fetchTracks(query, tracks -> {
-                        songAdapter = new SongAdapter(tracks, getActivity());
-                        recyclerView.setAdapter(songAdapter);
+        // Ban đầu lấy tất cả bài hát
+        fetchSongs("");
 
-                        tv_genre.setVisibility(View.GONE);
-                        tv_song.setVisibility(View.GONE);
-                        if (recyclerViewGenres != null) {
-                            recyclerViewGenres.setVisibility(View.GONE);
-                        }
-
-                        hideKeyboard(v);
-                    });
-                } else {
-                    Toast.makeText(getActivity(), "Vui lòng nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
-                }
-                return true; // Đánh dấu rằng sự kiện đã được xử lý
+        // Thêm listener cho EditText để tìm kiếm
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Không làm gì
             }
-            return false; // Không xử lý các sự kiện khác
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                fetchSongs(s.toString()); // Lấy bài hát dựa trên truy vấn tìm kiếm
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Không làm gì
+            }
         });
 
         return view;
     }
 
-    private void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+    // Lấy dữ liệu bài hát từ API, tùy chọn theo truy vấn tìm kiếm
+    private void fetchSongs(String query) {
+        new Thread(() -> {
+            try {
+                List<Song> songs = songController.getSongs(query); // Gọi SongController để lấy danh sách bài hát
 
-    // Phương thức tải danh sách thể loại
-    private void fetchGenres() {
-        genreController.fetchGenres(new GenreController.GenreControllerCallback<List<Genre>>() {
-            @Override
-            public void onSuccess(List<Genre> genreList) {
-                // Khởi tạo adapter cho RecyclerView hiển thị thể loại
-                genreAdapter = new GenreAdapter(getActivity(), genreList);
-                recyclerViewGenres = getView().findViewById(R.id.recyclerViewGenres);
-                recyclerViewGenres.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                recyclerViewGenres.setAdapter(genreAdapter);
-            }
+                requireActivity().runOnUiThread(() -> {
+                    songList.clear(); // Xóa danh sách trước khi thêm kết quả mới
+                    songList.addAll(songs); // Thêm bài hát mới vào danh sách
+                    adapter.notifyDataSetChanged(); // Cập nhật adapter
+                });
 
-            @Override
-            public void onFailure(String errorMessage) {
-                Toast.makeText(getActivity(), "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }).start();
     }
 }

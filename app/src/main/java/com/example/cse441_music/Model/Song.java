@@ -1,107 +1,103 @@
 package com.example.cse441_music.Model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Song {
-    @SerializedName("title")
-    private String title;
+    private String id;
+    private String name;
+    private String duration;
+    private String artistId;
+    private String artistName;
+    private String albumName;
+    private String albumId;
+    private String licenseUrl;
+    private int position;
+    private String releaseDate;
+    private String albumImage;
+    private String audioUrl;
+    private String audioDownloadUrl;
+    private String proUrl;
+    private String shortUrl;
+    private String shareUrl;
+    private String waveform;
+    private String imageUrl;
+    private MusicInfo musicInfo;
+    private boolean audioDownloadAllowed;
 
-    @SerializedName("artist")
-    private Artist artist;
-
-    @SerializedName("album")
-    private Album album;
-
-    @SerializedName("duration")
-    private int duration;
-
-    @SerializedName("preview")
-    private String filePath;
-
-    @SerializedName("cover")
-    private String coverImage;
-
-    @SerializedName("lyrics")
-    private String lyrics;
-
-    @SerializedName("genre") // Thêm thuộc tính genre
-    private String genre; // Hoặc có thể sử dụng kiểu dữ liệu Genre nếu bạn đã định nghĩa lớp Genre
-
-    public Song(String title, Artist artist, Album album, int duration, String filePath, String coverImage, String lyrics, String genre) {
-        this.title = title;
-        this.artist = artist;
-        this.album = album;
-        this.duration = duration;
-        this.filePath = filePath;
-        this.coverImage = coverImage;
-        this.lyrics = lyrics;
-        this.genre = genre; // Khởi tạo thuộc tính genre
+    public Song(String id, String name, String artistName, String audioUrl, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.artistName = artistName;
+        this.audioUrl = audioUrl;
+        this.imageUrl = imageUrl;
     }
 
-    public Song() {
+    public String getId() {
+        return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public String getAudioUrl() {
+        return audioUrl;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public Album getAlbum() {
-        return album;
-    }
+    public static class MusicInfo {
+        private String vocalInstrumental;
+        private String lang;
+        private String gender;
+        private String acousticElectric;
+        private String speed;
+        private Tags tags;
 
-    public void setAlbum(Album album) {
-        this.album = album;
-    }
+        public String getVocalInstrumental() {
+            return vocalInstrumental;
+        }
 
-    public int getDuration() {
-        return duration;
-    }
+        public String getLang() {
+            return lang;
+        }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+        public String getGender() {
+            return gender;
+        }
 
-    public String getFilePath() {
-        return filePath;
-    }
+        public String getAcousticElectric() {
+            return acousticElectric;
+        }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
+        public String getSpeed() {
+            return speed;
+        }
 
-    public String getCoverImage() {
-        return coverImage;
-    }
+        public Tags getTags() {
+            return tags;
+        }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
+        public static class Tags {
+            private String[] genres;
+            private String[] instruments;
+            private String[] varTags;
 
-    public String getLyrics() {
-        return lyrics;
-    }
+            public String[] getGenres() {
+                return genres;
+            }
 
-    public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
-    }
+            public String[] getInstruments() {
+                return instruments;
+            }
 
-    public String getGenre() { // Getter cho thuộc tính genre
-        return genre;
-    }
-
-    public void setGenre(String genre) { // Setter cho thuộc tính genre
-        this.genre = genre;
+            public String[] getVarTags() {
+                return varTags;
+            }
+        }
     }
 }

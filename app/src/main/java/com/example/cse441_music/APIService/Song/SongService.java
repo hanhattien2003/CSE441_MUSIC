@@ -1,6 +1,5 @@
 package com.example.cse441_music.APIService.Song;
 
-
 import com.example.cse441_music.Model.Song;
 
 import org.json.JSONArray;
@@ -23,11 +22,12 @@ public class SongService {
             String artistName = track.getString("artist_name");
             String audioUrl = track.getString("audio");
             String imageUrl = track.getString("image"); // Lấy URL của ảnh bài hát
+            String albumName = track.optString("album_name"); // Thêm tên album
 
-            songList.add(new Song(id, name, artistName, audioUrl, imageUrl)); // Thêm bài hát vào danh sách
+
+            songList.add(new Song(id, name, artistName, audioUrl, imageUrl, albumName)); // Thêm bài hát vào danh sách
         }
 
         return songList; // Trả về danh sách bài hát
     }
 }
-

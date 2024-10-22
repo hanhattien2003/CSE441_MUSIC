@@ -36,6 +36,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         Song song = songList.get(position);
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtistName());
+        holder.albumNameTextView.setText(song.getAlbumName());
 
         // Sử dụng Glide để tải ảnh vào ImageView
         Glide.with(holder.itemView.getContext())
@@ -59,14 +60,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     }
 
     public static class SongViewHolder extends RecyclerView.ViewHolder {
-        TextView songName, artistName;
+        TextView songName, artistName, albumNameTextView;
         ImageView songImage;  // Thêm ImageView để hiển thị ảnh bài hát
 
         public SongViewHolder(View itemView) {
             super(itemView);
             songName = itemView.findViewById(R.id.songName);
             artistName = itemView.findViewById(R.id.artistName);
-            songImage = itemView.findViewById(R.id.songImage);  // Gán ImageView
+            songImage = itemView.findViewById(R.id.songImage);
+
+            albumNameTextView = itemView.findViewById(R.id.albumNameTextView);
         }
     }
 }

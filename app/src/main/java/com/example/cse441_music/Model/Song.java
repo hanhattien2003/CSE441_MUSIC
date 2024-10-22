@@ -19,15 +19,19 @@ public class Song {
     private String shareUrl;
     private String waveform;
     private String imageUrl;
-    private MusicInfo musicInfo;
+
     private boolean audioDownloadAllowed;
 
-    public Song(String id, String name, String artistName, String audioUrl, String imageUrl) {
+
+
+    public Song(String id, String name, String artistName, String audioUrl, String imageUrl, String albumName) {
         this.id = id;
         this.name = name;
         this.artistName = artistName;
         this.audioUrl = audioUrl;
         this.imageUrl = imageUrl;
+        this.albumName = albumName;
+
     }
 
     public String getId() {
@@ -50,54 +54,11 @@ public class Song {
         return imageUrl;
     }
 
-    public static class MusicInfo {
-        private String vocalInstrumental;
-        private String lang;
-        private String gender;
-        private String acousticElectric;
-        private String speed;
-        private Tags tags;
-
-        public String getVocalInstrumental() {
-            return vocalInstrumental;
-        }
-
-        public String getLang() {
-            return lang;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public String getAcousticElectric() {
-            return acousticElectric;
-        }
-
-        public String getSpeed() {
-            return speed;
-        }
-
-        public Tags getTags() {
-            return tags;
-        }
-
-        public static class Tags {
-            private String[] genres;
-            private String[] instruments;
-            private String[] varTags;
-
-            public String[] getGenres() {
-                return genres;
-            }
-
-            public String[] getInstruments() {
-                return instruments;
-            }
-
-            public String[] getVarTags() {
-                return varTags;
-            }
-        }
+    public String getAlbumName() {
+        return albumName;
     }
+
+
+
+
 }

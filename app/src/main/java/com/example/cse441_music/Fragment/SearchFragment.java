@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,13 +32,16 @@ public class SearchFragment extends Fragment {
     private SongAdapter adapter;
     private List<Song> songList;
     private EditText editTextSearch;
+    private Spinner spinnerSearch;
     private SongController songController;
 
     // Biến hỗ trợ phân trang
     private boolean isLoading = false;
     private int currentPage = 1;
     private final int songsPerPage = 20; // Số bài hát cần tải mỗi lần
+    private  String selectedTag = "all tags";
 
+    private TextView check_json;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -49,6 +55,16 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        spinnerSearch = view.findViewById(R.id.spinnerSearch);
+
+
+
+        String[] values = {"all tags", "songs", "artists", "albums"};
+
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, values);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSearch.setAdapter(adapterSpinner);
+
 
         recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -62,8 +78,8 @@ public class SearchFragment extends Fragment {
 
         songController = new SongController();
 
-        // Bắt đầu tải trang đầu tiên với 20 bài hát ngẫu nhiên
-        fetchSongs(getRandomLetter(), currentPage);
+
+        fetchSongs(getRandomLetter(),selectedTag, currentPage);
 
         // Lắng nghe sự kiện Enter trên bàn phím để tìm kiếm
         editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -74,7 +90,9 @@ public class SearchFragment extends Fragment {
 
                     String query = editTextSearch.getText().toString();
                     currentPage = 1; // Reset về trang đầu tiên khi tìm kiếm mới
-                    fetchSongs(query, currentPage);
+                    selectedTag = spinnerSearch.getSelectedItem().toString();
+
+                    fetchSongs(query, selectedTag, currentPage);
 
                     // Ẩn bàn phím
                     InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -85,6 +103,20 @@ public class SearchFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        spinnerSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedTag = spinnerSearch.getSelectedItem().toString();
+                currentPage = 1; // Reset lại trang khi có tìm kiếm mới
+                fetchSongs(editTextSearch.getText().toString(), selectedTag, currentPage); // Gọi hàm fetchSongs với selectedTag
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Không làm gì khi không có giá trị được chọn
             }
         });
 
@@ -109,13 +141,12 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    // Hàm tải bài hát, có thể có tham số tìm kiếm
-    private void fetchSongs(String query, int page) {
+    private void fetchSongs(String query, String selectTag, int page) {
         isLoading = true; // Đang tải dữ liệu
 
         new Thread(() -> {
             try {
-                List<Song> songs = songController.getSongs(query, page, songsPerPage); // Truy vấn với phân trang
+                List<Song> songs = songController.getSongs(query, selectTag, page, songsPerPage); // Thay đổi để gọi phương thức mới
 
                 requireActivity().runOnUiThread(() -> {
                     if (page == 1) {
@@ -134,7 +165,7 @@ public class SearchFragment extends Fragment {
     // Hàm tải thêm bài hát khi cuộn đến cuối danh sách
     private void loadMoreSongs() {
         currentPage++; // Tăng số trang
-        fetchSongs(editTextSearch.getText().toString(), currentPage);
+        fetchSongs(editTextSearch.getText().toString(),selectedTag, currentPage);
     }
 
     // Lấy một chữ cái ngẫu nhiên để tìm bài hát ban đầu

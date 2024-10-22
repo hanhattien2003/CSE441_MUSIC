@@ -8,14 +8,33 @@
     android:orientation="vertical"
     tools:context=".Fragment.SearchFragment">
 
-    <!-- EditText for search input -->
-    <EditText
-        android:id="@+id/editTextSearch"
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Search songs"
-        android:padding="16dp" />
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
+            android:hint="Search songs" />
+
+        <Spinner
+            android:id="@+id/spinnerSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/selectbox_background"/>
+
+
+
+    </LinearLayout>
 
     <!-- RecyclerView to display the song list -->
     <androidx.recyclerview.widget.RecyclerView

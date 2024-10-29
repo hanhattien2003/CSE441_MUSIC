@@ -1,89 +1,40 @@
 package com.example.cse441_music.Model;
 
-
-import com.google.gson.annotations.SerializedName;
-import java.util.List;
-
 public class Album {
-    @SerializedName("id")
-    private int id; // ID của album
+    private String id;
+    private String name;
+    private String releaseDate;
+    private String artistId;
+    private String artistName;
+    private String imageUrl;
+    private String zipUrl;
+    private String shortUrl;
+    private String shareUrl;
+    private boolean zipAllowed;
 
-    @SerializedName("title")
-    private String title; // Tiêu đề của album
-
-    @SerializedName("cover")
-    private String cover; // Đường dẫn đến ảnh bìa album
-
-    @SerializedName("release_date")
-    private String releaseDate; // Ngày phát hành album
-
-    @SerializedName("tracks")
-    private List<Song> Songs; // Danh sách bài hát trong album
-
-    @SerializedName("artist")
-    private Artist artist; // Nghệ sĩ của album
-
-    // Getter và setter cho các trường
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Album(String id, String name, String releaseDate, String artistId, String artistName, String imageUrl, String zipUrl, String shortUrl, String shareUrl, boolean zipAllowed) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
+        this.name = name;
         this.releaseDate = releaseDate;
+        this.artistId = artistId;
+        this.artistName = artistName;
+        this.imageUrl = imageUrl;
+        this.zipUrl = zipUrl;
+        this.shortUrl = shortUrl;
+        this.shareUrl = shareUrl;
+        this.zipAllowed = zipAllowed;
     }
 
-    public List<Song> getTracks() {
-        return Songs;
-    }
+    // Getters and Setters
 
-    public void setTracks(List<Song> Songs) {
-        this.Songs = Songs;
-    }
-
-    public Artist getArtist() {
-        return artist;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
-    // Constructor với tất cả các trường
-    public Album(int id, String title, String cover, String releaseDate, List<Song> Songs, Artist artist) {
-        this.id = id;
-        this.title = title;
-        this.cover = cover;
-        this.releaseDate = releaseDate;
-        this.Songs = Songs;
-        this.artist = artist;
-    }
-
-    // Constructor không tham số
-    public Album() {
-    }
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getReleaseDate() { return releaseDate; }
+    public String getArtistId() { return artistId; }
+    public String getArtistName() { return artistName; }
+    public String getImageUrl() { return imageUrl; }
+    public String getZipUrl() { return zipUrl; }
+    public String getShortUrl() { return shortUrl; }
+    public String getShareUrl() { return shareUrl; }
+    public boolean isZipAllowed() { return zipAllowed; }
 }
-

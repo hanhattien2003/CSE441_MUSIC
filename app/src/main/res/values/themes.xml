@@ -6,6 +6,8 @@
         <item name="colorOnPrimary">@color/light_blue_on_primary</item>
         <item name="colorSecondary">@color/light_blue_accent</item>
         <item name="android:colorBackground">@color/light_blue_background</item>
+        <item name="android:textColorHighlight">@color/light_blue_900</item>"
+        <item name="colorSecondaryContainer">@color/light_blue_very_light</item>
     </style>
 
     <style name="Theme.CSE441_MUSIC" parent="Base.Theme.CSE441_MUSIC" />

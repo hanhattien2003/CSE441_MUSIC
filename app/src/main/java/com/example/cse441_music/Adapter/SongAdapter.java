@@ -1,10 +1,10 @@
 package com.example.cse441_music.Adapter;
 
-
-import android.content.Intent;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,59 +18,49 @@ import com.example.cse441_music.R;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
-    private List<Song> songList;
+    private List<Song> songs; // Danh sách bài hát
+    private Context context; // Thêm context vào constructor
 
-    public SongAdapter(List<Song> songList) {
-        this.songList = songList;
+    public SongAdapter(Context context, List<Song> songs) { // Nhận context
+        this.context = context;
+        this.songs = songs;
     }
 
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_search_item_song, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, parent, false);
         return new SongViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
-        Song song = songList.get(position);
-        holder.songName.setText(song.getName());
-        holder.artistName.setText(song.getArtistName());
-        holder.albumNameTextView.setText(song.getAlbumName());
+        Song song = songs.get(position);
+        holder.songTitle.setText(song.getTitle());
+        holder.songArtist.setText(song.getArtist().getName());
+        Glide.with(context).load(song.getAlbum().getCover()).into(holder.songThumbnail);
 
-        // Sử dụng Glide để tải ảnh vào ImageView
-        Glide.with(holder.itemView.getContext())
-                .load(song.getImageUrl())
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(holder.songImage);
-
-//        // Set sự kiện khi click vào bài hát
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(holder.itemView.getContext(), PlaySongActivity.class);
-//            intent.putExtra("songTitle", song.getName());
-//            intent.putExtra("imageUrl", song.getImageUrl());
-//            intent.putExtra("audioUrl", song.getAudioUrl());
-//            holder.itemView.getContext().startActivity(intent);
-//        });
+        holder.addToFavorite.setOnClickListener(v -> {
+            // Logic for adding to favorites
+        });
     }
 
     @Override
     public int getItemCount() {
-        return songList.size();
+        return songs != null ? songs.size() : 0;
     }
 
     public static class SongViewHolder extends RecyclerView.ViewHolder {
-        TextView songName, artistName, albumNameTextView;
-        ImageView songImage;  // Thêm ImageView để hiển thị ảnh bài hát
+        TextView songTitle, songArtist;
+        ImageView songThumbnail;
+        ImageButton addToFavorite;
 
-        public SongViewHolder(View itemView) {
+        public SongViewHolder(@NonNull View itemView) {
             super(itemView);
-            songName = itemView.findViewById(R.id.songName);
-            artistName = itemView.findViewById(R.id.artistName);
-            songImage = itemView.findViewById(R.id.songImage);
-
-            albumNameTextView = itemView.findViewById(R.id.albumNameTextView);
+            songTitle = itemView.findViewById(R.id.songTitle);
+            songArtist = itemView.findViewById(R.id.songArtist);
+            songThumbnail = itemView.findViewById(R.id.songThumbnail);
+            addToFavorite = itemView.findViewById(R.id.addToFavorite);
         }
     }
 }
-

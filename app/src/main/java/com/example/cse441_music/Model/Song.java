@@ -7,6 +7,13 @@ public class Song {
     private String albumName;
     private String audioUrl;
     private String imageUrl;
+    private String title;
+    private Artist artist;
+    private Album album;
+
+    public String getTitle() { return title; }
+    public Artist getArtist() { return artist; }
+    public Album getAlbum() { return album; }
 
     public Song(String id, String name, String artistName, String audioUrl, String imageUrl, String albumName) {
         this.id = id;
@@ -16,6 +23,15 @@ public class Song {
         this.imageUrl = imageUrl;
         this.albumName = albumName;
 
+    }
+    public class Artist {
+        private String name;
+        public String getName() { return name; }
+    }
+
+    public class Album {
+        private String cover;
+        public String getCover() { return cover; }
     }
 
     public String getId() {

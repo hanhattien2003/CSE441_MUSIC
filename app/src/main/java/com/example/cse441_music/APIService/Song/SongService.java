@@ -24,7 +24,6 @@ public class SongService {
             String imageUrl = track.getString("image"); // Lấy URL của ảnh bài hát
             String albumName = track.optString("album_name"); // Thêm tên album
 
-
             songList.add(new Song(id, name, artistName, audioUrl, imageUrl, albumName)); // Thêm bài hát vào danh sách
         }
 

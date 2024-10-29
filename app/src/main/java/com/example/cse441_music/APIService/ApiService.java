@@ -32,7 +32,6 @@ public class ApiService {
         return apiUrl.toString();
     }
 
-
     public String fetchData(String apiUrl) throws Exception {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -70,5 +69,4 @@ public class ApiService {
             }
         }
     }
-
 }

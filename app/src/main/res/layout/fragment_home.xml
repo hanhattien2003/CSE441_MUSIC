@@ -6,16 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
 
-    <!-- App Bar với tên ứng dụng và các icon -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:title="Tên ứng dụng"
-        app:menu="@menu/toolbar_menu" />
+ 
 
     <!-- Nội dung chính -->
     <ScrollView

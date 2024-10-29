@@ -19,8 +19,8 @@ public class SongController {
     // Thêm selectedTag vào phương thức getSongs để thực hiện lọc bài hát
     public List<Song> getSongs(String query, String selectedTag, int page, int songsPerPage) throws Exception {
         // Gọi API để lấy danh sách bài hát theo query và phân trang
-        String jsonResponse = apiService.fetchSongs(query, page, songsPerPage);
-        List<Song> allSongs = songService.parseJson(jsonResponse); // Lấy toàn bộ danh sách bài hát từ API
+        String jsonResponse = apiService.buildSongUrl(query, page, songsPerPage);
+        List<Song> allSongs = songService.parseJson(apiService.fetchData(jsonResponse)); // Lấy toàn bộ danh sách bài hát từ API
 
         // Thực hiện bước lọc thứ 2 dựa trên giá trị selectedTag
         List<Song> filteredSongs = new ArrayList<>();

@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:title="Tên ứng dụng"
+        app:menu="@menu/toolbar_menu"
+        tools:ignore="MissingConstraints" />
+
+
     <FrameLayout
         android:id="@+id/main_frame_layout"
         android:layout_width="0dp"
@@ -13,7 +25,7 @@
         app:layout_constraintBottom_toTopOf="@id/media_player_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <LinearLayout
         android:id="@+id/media_player_layout"

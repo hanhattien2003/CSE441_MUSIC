@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         recyclerViewSongs.setAdapter(songAdapter);
 
         // Lấy danh sách bài hát theo ngày tháng năm
-        String startDate = "2023-01-01"; // Ngày bắt đầu
+        String startDate = "2000-01-01"; // Ngày bắt đầu
         String endDate = "2023-10-25"; // Ngày kết thúc
         fetchTopTracks(startDate, endDate);
 

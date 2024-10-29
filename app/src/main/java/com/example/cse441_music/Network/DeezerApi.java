@@ -13,4 +13,5 @@ public interface DeezerApi {
 
     @GET("genre")
     Call<DeezerGenreResponse> getGenres();
+
 }

@@ -16,8 +16,6 @@ import com.example.cse441_music.Adapter.SongAdapter;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.R;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +23,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewSongs;
     private SongAdapter songAdapter;
     private List<Song> songList;
+    private ApiService apiService;
+    private SongService songService;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -44,22 +44,21 @@ public class HomeFragment extends Fragment {
         songAdapter = new SongAdapter(songList);
         recyclerViewSongs.setAdapter(songAdapter);
 
-        // Lấy danh sách bài hát theo ngày tháng năm
-        String startDate = "2000-01-01"; // Ngày bắt đầu
-        String endDate = "2023-10-25"; // Ngày kết thúc
-        fetchTopTracks(startDate, endDate);
+        // Khởi tạo ApiService và SongService
+        apiService = new ApiService();
+        songService = new SongService();
+
+        // Lấy danh sách bài hát
+        fetchTopTracks("your_query"); // Thay "your_query" bằng giá trị bạn muốn tìm kiếm
 
         return rootView;
     }
 
-    private void fetchTopTracks(String startDate, String endDate) {
-        ApiService apiService = new ApiService();
+    private void fetchTopTracks(String query) {
         new Thread(() -> {
             try {
-                // Lấy danh sách bài hát theo ngày tháng năm
-                String apiUrl = apiService.buildTopTracksUrl(startDate, endDate, 0, 20); // Lấy 20 bài hát đầu tiên
-                String jsonResponse = apiService.fetchData(apiUrl);
-                SongService songService = new SongService();
+                // Lấy danh sách bài hát theo query
+                String jsonResponse = apiService.fetchSongs(query, 0, 20); // Lấy 20 bài hát đầu tiên
                 List<Song> songs = songService.parseJson(jsonResponse);
 
                 // Cập nhật danh sách bài hát trong UI

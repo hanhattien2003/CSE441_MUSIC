@@ -1,5 +1,7 @@
 package com.example.cse441_music.APIService;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ApiService {
-    private static final String BASE_URL = "https://api.jamendo.com/v3.0/tracks/?client_id=900dafad";
-
+    private static final String BASE_URL = "https://api.jamendo.com/v3.0";
+    private static final String CLIENT_ID = "900dafad";
     public String buildSongUrl(String query, int page, int limit) {
         StringBuilder apiUrl = new StringBuilder(BASE_URL);
         apiUrl.append("&limit=").append(limit);
@@ -33,40 +35,40 @@ public class ApiService {
     }
 
     public String fetchData(String apiUrl) throws Exception {
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        InputStream inputStream = null;
+        URL url = new URL(apiUrl);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        try {
-            URL url = new URL(apiUrl);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-
-            int responseCode = urlConnection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                throw new IOException("HTTP error code: " + responseCode);
-            }
-
-            inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
-            }
-
-            return result.toString();
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line);
         }
+
+        reader.close();
+        return result.toString(); // Return the JSON response from the API
     }
+
+
+    // Method to fetch songs with pagination
+    public String fetchSongs(String query, int page, int limit) throws Exception {
+        String apiUrl = BASE_URL + "/tracks/?client_id=" + CLIENT_ID + "&limit=" + limit + "&offset=" + (page * limit);
+        if (!query.isEmpty()) {
+            apiUrl += "&search=" + query;
+        }
+        return fetchData(apiUrl);
+    }
+    // Method to fetch album tracks by artist name
+    public String fetchAlbums(int page, int limit) throws Exception {
+        String apiUrl = BASE_URL + "/albums/?client_id=" + CLIENT_ID + "&format=jsonpretty&limit=" + limit + "&offset=" + (page * limit);
+        Log.d("API URL", apiUrl);
+        return fetchData(apiUrl);
+    }
+
+    public String fetchTracksByAlbum(String albumId) throws Exception {
+        String apiUrl = BASE_URL + "/albums/tracks/?client_id=" + CLIENT_ID + "&format=jsonpretty&id=" + albumId;
+        return fetchData(apiUrl);
+    }
+
 }

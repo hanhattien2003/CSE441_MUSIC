@@ -12,9 +12,9 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/light_blue_900"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Tên ứng dụng"
+        app:title="Yêu thích"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

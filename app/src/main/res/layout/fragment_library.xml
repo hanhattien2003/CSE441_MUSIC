@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/primaryColor"
+        android:background="@color/light_blue_primary"
         android:padding="16dp">
 
         <ImageView

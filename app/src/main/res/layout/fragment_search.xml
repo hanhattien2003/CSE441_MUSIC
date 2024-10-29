@@ -1,65 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Fragment.SearchFragment">
 
-    <LinearLayout
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="6dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <EditText
-            android:id="@+id/search_edit_text"
-            android:layout_width="match_parent"
+            android:id="@+id/editTextSearch"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Nhập tên bài hát/ca sĩ"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="6dp"/>
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
+            android:hint="Search songs" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Khám phá các thể loại"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="6dp"
-            android:id="@+id/tv_genre"/>
-
-        <!-- RecyclerView hiển thị danh sách thể loại nhạc theo chiều ngang -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewGenres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-
-        <!-- Khoảng cách 12dp giữa hai RecyclerView -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Các bản nhạc bạn có thể thích"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="6dp"
-            android:id="@+id/tv_song"/>
+        <Spinner
+            android:id="@+id/spinnerSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/selectbox_background"/>
 
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_search_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
+    <!-- RecyclerView to display the song list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/editTextSearch"
+        tools:listitem="@layout/fragment_search_item_song" />
 
-
-
-</FrameLayout>
+</LinearLayout>

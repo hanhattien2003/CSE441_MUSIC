@@ -1,61 +1,53 @@
 package com.example.cse441_music.Controller;
 
-import static com.example.cse441_music.Network.RetrofitClient.BASE_URL;
-
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.cse441_music.Model.DeezerResponse;
+import com.example.cse441_music.APIService.ApiService;
+import com.example.cse441_music.APIService.Song.SongService;
 import com.example.cse441_music.Model.Song;
-import com.example.cse441_music.Network.DeezerApi;
-import com.example.cse441_music.Network.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class SongController {
-    private Song song;
-    private Context context; // Để sử dụng Toast
+    private ApiService apiService;
+    private SongService songService;
 
-    // Constructor
-    public SongController(Song song, Context context) {
-        this.song = song;
-        this.context = context;
+    public SongController() {
+        this.apiService = new ApiService();
+        this.songService = new SongService();
     }
 
-    public void deleteSong() {
-        // Xóa bài hát khỏi điện thoại
-    }
+    // Thêm selectedTag vào phương thức getSongs để thực hiện lọc bài hát
+    public List<Song> getSongs(String query, String selectedTag, int page, int songsPerPage) throws Exception {
+        // Gọi API để lấy danh sách bài hát theo query và phân trang
+        String jsonResponse = apiService.fetchSongs(query, page, songsPerPage);
+        List<Song> allSongs = songService.parseJson(jsonResponse); // Lấy toàn bộ danh sách bài hát từ API
 
-    public void fetchTracks(String query, SongFetchCallback callback) {
-        DeezerApi deezerApi = RetrofitClient.getClient().create(DeezerApi.class);
-        Call<DeezerResponse> call = deezerApi.searchTracks(query);
-        call.enqueue(new Callback<DeezerResponse>() {
-            @Override
-            public void onResponse(Call<DeezerResponse> call, Response<DeezerResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Song> tracks = response.body().getData();
-                    callback.onSuccess(tracks); // Gọi callback thành công
-                } else {
-                    Toast.makeText(context, "Không tìm thấy bài hát", Toast.LENGTH_SHORT).show();
-                }
+        // Thực hiện bước lọc thứ 2 dựa trên giá trị selectedTag
+        List<Song> filteredSongs = new ArrayList<>();
+        for (Song song : allSongs) {
+            switch (selectedTag) {
+                case "albums":
+                    if (song.getAlbumName() != null && song.getAlbumName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredSongs.add(song); // Thêm bài hát vào danh sách nếu album chứa query
+                    }
+                    break;
+                case "artists":
+                    if (song.getArtistName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredSongs.add(song); // Thêm bài hát nếu nghệ sĩ chứa query
+                    }
+                    break;
+                case "songs":
+                    if (song.getName().toLowerCase().contains(query.toLowerCase())) {
+                        filteredSongs.add(song); // Thêm bài hát nếu tên bài hát chứa query
+                    }
+                    break;
+                default:
+                    return allSongs;
+
             }
+        }
 
-            @Override
-            public void onFailure(Call<DeezerResponse> call, Throwable t) {
-                Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public interface SongFetchCallback {
-        void onSuccess(List<Song> songs);
+        return filteredSongs; // Trả về danh sách đã lọc
     }
 
 

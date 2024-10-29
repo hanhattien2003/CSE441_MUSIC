@@ -3,14 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:gravity="center_vertical">
 
     <ImageView
-        android:id="@+id/songImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/songThumbnail"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:scaleType="centerCrop"
-        android:layout_marginEnd="8dp"/>
+
+        android:layout_marginEnd="16dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -19,16 +21,26 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/fragment_search_song"
+            android:id="@+id/songTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Tên bài hát"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/fragment_search_artist"
+            android:id="@+id/songArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"/>
+            android:text="Tên tác giả"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/addToFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_favorite" />
 </LinearLayout>

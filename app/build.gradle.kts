@@ -45,11 +45,17 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    //phu thuoc goi api(do android ko ho tro http)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Thư viện Retrofit để gọi API
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
 
-    //glide tai anh
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    // Converter để sử dụng Gson trong Retrofit
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Thư viện để phân tích cú pháp JSON
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+
+
 }

@@ -1,107 +1,64 @@
 package com.example.cse441_music.Model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Song {
-    @SerializedName("title")
-    private String title;
+    private String id;
+    private String name;
+    private String duration;
+    private String artistId;
+    private String artistName;
+    private String albumName;
+    private String albumId;
+    private String licenseUrl;
+    private int position;
+    private String releaseDate;
+    private String albumImage;
+    private String audioUrl;
+    private String audioDownloadUrl;
+    private String proUrl;
+    private String shortUrl;
+    private String shareUrl;
+    private String waveform;
+    private String imageUrl;
 
-    @SerializedName("artist")
-    private Artist artist;
+    private boolean audioDownloadAllowed;
 
-    @SerializedName("album")
-    private Album album;
 
-    @SerializedName("duration")
-    private int duration;
 
-    @SerializedName("preview")
-    private String filePath;
+    public Song(String id, String name, String artistName, String audioUrl, String imageUrl, String albumName) {
+        this.id = id;
+        this.name = name;
+        this.artistName = artistName;
+        this.audioUrl = audioUrl;
+        this.imageUrl = imageUrl;
+        this.albumName = albumName;
 
-    @SerializedName("cover")
-    private String coverImage;
-
-    @SerializedName("lyrics")
-    private String lyrics;
-
-    @SerializedName("genre") // Thêm thuộc tính genre
-    private String genre; // Hoặc có thể sử dụng kiểu dữ liệu Genre nếu bạn đã định nghĩa lớp Genre
-
-    public Song(String title, Artist artist, Album album, int duration, String filePath, String coverImage, String lyrics, String genre) {
-        this.title = title;
-        this.artist = artist;
-        this.album = album;
-        this.duration = duration;
-        this.filePath = filePath;
-        this.coverImage = coverImage;
-        this.lyrics = lyrics;
-        this.genre = genre; // Khởi tạo thuộc tính genre
     }
 
-    public Song() {
+    public String getId() {
+        return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public String getAudioUrl() {
+        return audioUrl;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public Album getAlbum() {
-        return album;
+    public String getAlbumName() {
+        return albumName;
     }
 
-    public void setAlbum(Album album) {
-        this.album = album;
-    }
 
-    public int getDuration() {
-        return duration;
-    }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public String getLyrics() {
-        return lyrics;
-    }
-
-    public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
-    }
-
-    public String getGenre() { // Getter cho thuộc tính genre
-        return genre;
-    }
-
-    public void setGenre(String genre) { // Setter cho thuộc tính genre
-        this.genre = genre;
-    }
 }

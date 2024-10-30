@@ -25,12 +25,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     private List<Song> songList;
     private DatabaseHelper databaseHelper;
 
-    // Constructor không yêu cầu DatabaseHelper cho HomeFragment
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
 
-    // Constructor cho FavoriteFragment, bao gồm DatabaseHelper
+    
     public SongAdapter(List<Song> songList, DatabaseHelper databaseHelper) {
         this.songList = songList;
         this.databaseHelper = databaseHelper;

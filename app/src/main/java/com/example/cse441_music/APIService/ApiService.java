@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class ApiService {
     private static final String BASE_URL = "https://api.jamendo.com/v3.0";
-    private static final String CLIENT_ID = "900dafad";
+    public static final String CLIENT_ID = "900dafad";
 
     public String buildSongUrl(String query, int page, int limit) {
         StringBuilder apiUrl = new StringBuilder(BASE_URL + "/tracks/?client_id=" + CLIENT_ID);

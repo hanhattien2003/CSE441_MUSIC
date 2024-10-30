@@ -1,5 +1,6 @@
 package com.example.cse441_music.APIService.Song;
 
+import com.example.cse441_music.APIService.ApiService;
 import com.example.cse441_music.Model.Album;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.Model.Track;
@@ -12,6 +13,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongService {
+    private ApiService apiService;
+
+    public Song getSongById(String id) {
+        try {
+            // Xây dựng URL để lấy thông tin bài hát theo ID
+            String apiUrl = "https://api.jamendo.com/v3.0/tracks/" + id + "?client_id=" + ApiService.CLIENT_ID;
+
+            // Gọi API và lấy dữ liệu JSON
+            String response = apiService.fetchData(apiUrl);
+
+            // Phân tích dữ liệu JSON
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+            if (resultsArray.length() > 0) {
+                JSONObject songJson = resultsArray.getJSONObject(0);
+
+                // Lấy thông tin từ JSON và tạo đối tượng Song
+                Song song = new Song();
+                song.setId(songJson.getString("id"));
+                song.setName(songJson.getString("name"));
+                song.setAlbumName(songJson.getString("album_name"));
+                song.setArtistName(songJson.getString("artist_name"));
+                // (Gán các thuộc tính khác nếu cần)
+
+                return song;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public List<Song> parseJson(String json) throws JSONException {
         List<Song> songList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(json);

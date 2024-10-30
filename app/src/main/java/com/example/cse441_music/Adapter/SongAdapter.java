@@ -17,23 +17,24 @@ import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
-import com.example.cse441_music.Database.DatabaseHelper;
+//import com.example.cse441_music.Database.DatabaseHelper;
 
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
-    private DatabaseHelper databaseHelper;
+//    private DatabaseHelper databaseHelper;
 
+    // Constructor không yêu cầu DatabaseHelper cho HomeFragment
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
 
-    
-    public SongAdapter(List<Song> songList, DatabaseHelper databaseHelper) {
-        this.songList = songList;
-        this.databaseHelper = databaseHelper;
-    }
+    // Constructor cho FavoriteFragment, bao gồm DatabaseHelper
+//    public SongAdapter(List<Song> songList, DatabaseHelper databaseHelper) {
+//        this.songList = songList;
+//        this.databaseHelper = databaseHelper;
+//    }
 
     @NonNull
     @Override
@@ -54,8 +55,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.songImage);
 
-
-        //play song
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
             intent.putExtra("songTitle", song.getName());
@@ -63,20 +62,19 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             intent.putExtra("audioUrl", song.getAudioUrl());
             holder.itemView.getContext().startActivity(intent);
         });
-        //*
 
         // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper
-        if (databaseHelper != null) {
-            holder.addToFavorite.setOnClickListener(v -> {
-                List<String> favoriteIds = databaseHelper.getFavorites();
-                if (!favoriteIds.contains(song.getId())) {
-                    databaseHelper.addFavorite(song.getId());
-                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+//        if (databaseHelper != null) {
+//            holder.addToFavorite.setOnClickListener(v -> {
+//                List<String> favoriteIds = databaseHelper.getFavorites();
+//                if (!favoriteIds.contains(song.getId())) {
+//                    databaseHelper.addFavorite(song.getId());
+//                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
     }
 
     @Override

@@ -120,6 +120,6 @@
         app:backgroundTint="@color/light_blue_background"
         app:itemIconTint="@color/light_blue_900"
         app:itemTextColor="@color/light_blue_900"
-        android:background="@drawable/bottom_navigation_bar_selector"/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

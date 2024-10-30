@@ -24,6 +24,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private TextView currentTime, totalDuration;
     private ImageView songImage;
     private ObjectAnimator rotateAnimator;
+    private Button pauseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         songImage = findViewById(R.id.song_image);
         TextView songTitleView = findViewById(R.id.song_title);
-        Button playButton = findViewById(R.id.play_button);
-        Button pauseButton = findViewById(R.id.pause_button);
+        pauseButton = findViewById(R.id.pause_button);
         Button stopButton = findViewById(R.id.stop_button);
         seekBar = findViewById(R.id.seek_bar);
         currentTime = findViewById(R.id.current_time);
@@ -58,7 +58,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         mediaPlayer = new MediaPlayer();
 
-        playButton.setOnClickListener(v -> playAudio());
+        playAudio();
         pauseButton.setOnClickListener(v -> pauseAudio());
         stopButton.setOnClickListener(v -> stopAudio());
 
@@ -102,12 +102,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             handler.removeCallbacks(updateSeekBar);
-
+            pauseButton.setBackgroundResource(R.drawable.ic_play);
             rotateAnimator.pause();
         }else {
             mediaPlayer.start();
             handler.postDelayed(updateSeekBar, 1000);
-
+            pauseButton.setBackgroundResource(R.drawable.ic_toolbar);
             rotateAnimator.resume();
         }
     }

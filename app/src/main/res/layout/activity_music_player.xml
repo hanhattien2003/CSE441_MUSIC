@@ -38,12 +38,14 @@
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:layout_gravity="center"
+                    android:layout_margin="44dp"
                     android:layout_marginBottom="16dp"/>
 
                 <TextView
                     android:id="@+id/song_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#fff"
                     android:text="Song Title"
                     android:textSize="24sp"
                     android:layout_gravity="center" />
@@ -60,6 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00:00"
+                        android:textColor="#fff"
                         android:textSize="14sp"/>
 
                     <SeekBar
@@ -75,24 +78,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00:00"
+                        android:textColor="#fff"
                         android:textSize="14sp"/>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/play_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Play"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16dp" />
 
-                <Button
-                    android:id="@+id/pause_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pause"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="8dp" />
+            <Button
+                android:id="@+id/pause_button"
+                android:layout_width="46dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_toolbar"
+                android:text="" />
 
                 <Button
                     android:id="@+id/stop_button"

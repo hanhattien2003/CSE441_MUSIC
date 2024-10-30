@@ -1,6 +1,7 @@
 package com.example.cse441_music.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
+import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
 import com.example.cse441_music.Database.DatabaseHelper;
 
@@ -52,6 +54,17 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 .load(song.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.songImage);
+
+
+        //play song
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
+            intent.putExtra("songTitle", song.getName());
+            intent.putExtra("imageUrl", song.getImageUrl());
+            intent.putExtra("audioUrl", song.getAudioUrl());
+            holder.itemView.getContext().startActivity(intent);
+        });
+        //*
 
         // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper
         if (databaseHelper != null) {

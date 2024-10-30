@@ -46,17 +46,11 @@
 
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/addToFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Them"
-        />
-<!--    <ImageButton-->
-<!--        android:id="@+id/addToFavorite"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/ic_favorite"-->
-<!--        app:tint="@color/light_blue_900"-->
-<!--        android:background="@color/white"/>-->
+        android:src="@drawable/ic_favorite"
+        app:tint="@color/light_blue_900"
+        android:background="@color/white"/>
 </LinearLayout>

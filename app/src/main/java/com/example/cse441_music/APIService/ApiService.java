@@ -48,12 +48,15 @@ public class ApiService {
         return fetchData(apiUrl);
     }
 
-    public String fetchAlbums(int i, int i1) {
-        return null;
+    public String fetchAlbums(int page, int limit) throws Exception {
+        String apiUrl = BASE_URL + "/albums/?client_id=" + CLIENT_ID + "&format=jsonpretty&limit=" + limit + "&offset=" + (page * limit);
+        Log.d("API URL", apiUrl);
+        return fetchData(apiUrl);
     }
 
-    public String fetchTracksByAlbum(String albumId) {
-        return null;
+    public String fetchTracksByAlbum(String albumId) throws Exception {
+        String apiUrl = BASE_URL + "/albums/tracks/?client_id=" + CLIENT_ID + "&format=jsonpretty&id=" + albumId;
+        return fetchData(apiUrl);
     }
 
     // Add other API methods as needed

@@ -4,34 +4,34 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.R;
-import com.example.cse441_music.Database.DatabaseHelper;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
-    private DatabaseHelper databaseHelper;
+    private Context context;
+    private static final String FILENAME = "favorite_songs.txt";
 
-    // Constructor không yêu cầu DatabaseHelper cho HomeFragment
+    // Constructor without context for HomeFragment
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
 
-    // Constructor cho FavoriteFragment, bao gồm DatabaseHelper
-    public SongAdapter(List<Song> songList, DatabaseHelper databaseHelper) {
+    // Constructor with context for saving favorites
+    public SongAdapter(List<Song> songList, Context context) {
         this.songList = songList;
-        this.databaseHelper = databaseHelper;
+        this.context = context;
     }
 
     @NonNull
@@ -47,22 +47,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtistName());
         holder.albumNameTextView.setText(song.getAlbumName());
-
         Glide.with(holder.itemView.getContext())
                 .load(song.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.songImage);
 
-        // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper
-        if (databaseHelper != null) {
+        if (context != null) {
             holder.addToFavorite.setOnClickListener(v -> {
-                List<String> favoriteIds = databaseHelper.getFavorites();
-                if (!favoriteIds.contains(song.getId())) {
-                    databaseHelper.addFavorite(song.getId());
-                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                }
+                addToFavorites(song.getId());
+                Toast.makeText(context, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
             });
         }
     }
@@ -72,10 +65,19 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         return songList.size();
     }
 
+    private void addToFavorites(String songId) {
+        try (FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_APPEND);
+             OutputStreamWriter osw = new OutputStreamWriter(fos)) {
+            osw.write(songId + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static class SongViewHolder extends RecyclerView.ViewHolder {
         TextView songName, artistName, albumNameTextView;
         ImageView songImage;
-        ImageButton addToFavorite;
+        Button addToFavorite;
 
         public SongViewHolder(View itemView) {
             super(itemView);

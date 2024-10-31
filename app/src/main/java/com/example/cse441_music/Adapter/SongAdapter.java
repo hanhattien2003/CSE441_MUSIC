@@ -1,6 +1,5 @@
 package com.example.cse441_music.Adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +17,6 @@ import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
 //import com.example.cse441_music.Database.DatabaseHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +57,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-//            intent.putExtra("songTitle", song.getName());
-//            intent.putExtra("imageUrl", song.getImageUrl());
-//            intent.putExtra("audioUrl", song.getAudioUrl());
+//            intent.putExtra("songTitle", Song.getName());
+//            intent.putExtra("imageUrl", Song.getImageUrl());
+//            intent.putExtra("audioUrl", Song.getAudioUrl());
             intent.putExtra("songPositon", position+"");
             intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
 
@@ -75,8 +72,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 //        if (databaseHelper != null) {
 //            holder.addToFavorite.setOnClickListener(v -> {
 //                List<String> favoriteIds = databaseHelper.getFavorites();
-//                if (!favoriteIds.contains(song.getId())) {
-//                    databaseHelper.addFavorite(song.getId());
+//                if (!favoriteIds.contains(Song.getId())) {
+//                    databaseHelper.addFavorite(Song.getId());
 //                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
 //                } else {
 //                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();

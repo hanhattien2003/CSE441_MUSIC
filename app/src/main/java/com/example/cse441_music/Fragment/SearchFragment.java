@@ -153,7 +153,7 @@ public class SearchFragment extends Fragment {
                         songList.clear(); // Xóa danh sách nếu là trang đầu tiên
                     }
                     songList.addAll(songs); // Thêm bài hát vào danh sách
-                    adapter.notifyDataSetChanged(); // Cập nhật adapter
+                    adapter.notifyDataSetChanged(); // Cập nhật Adapter
                     isLoading = false; // Hoàn thành tải dữ liệu
                 });
             } catch (Exception e) {

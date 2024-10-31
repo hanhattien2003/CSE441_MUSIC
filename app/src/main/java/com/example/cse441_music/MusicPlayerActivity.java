@@ -5,9 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaPlayer;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -33,10 +32,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private TextView currentTime, totalDuration;
     private ImageView songImage;
     private ObjectAnimator rotateAnimator;
-    private Button statusSong;
+    private TextView songTitleView, song_artist;
+    private ImageView nextButton, preButton, statusSong, imgview_one_song;
+
     private int check_play = 0;
-    private TextView songTitleView;
-    private Button nextButton, preButton;
+    private boolean play_one = false;
+
 
     private BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
         @Override
@@ -50,7 +51,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 currentTime.setText(formatTime(currentPosition));
                 totalDuration.setText(formatTime(duration));
             } else if (intent.getAction().equals(MusicService.ACTION_SONG_COMPLETED)) {
-                playNextSong();
+                if(play_one) {
+                    playAudio();
+                } else {
+                    playNextSong();
+                }
+
             }
         }
     };
@@ -73,8 +79,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.seek_bar);
         currentTime = findViewById(R.id.current_time);
         totalDuration = findViewById(R.id.total_duration);
+        song_artist = findViewById(R.id.song_artist);
+
+        imgview_one_song = findViewById(R.id.imgview_one_song);
+        imgview_one_song.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!play_one) {
+                    imgview_one_song.setImageResource(R.drawable.icon_ciclre);
+                } else {
+                    imgview_one_song.setImageResource(android.R.drawable.stat_notify_sync);
+                }
+                play_one = !play_one;
+            }
+        });
 
         songTitleView.setText(current_song.getName());
+        song_artist.setText(current_song.getArtistName());
         Glide.with(this)
                 .load(current_song.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_foreground)
@@ -87,14 +108,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         preButton = findViewById(R.id.pre_button);
         preButton.setOnClickListener(v -> {
-            if (position == 0) {
-                Toast.makeText(this, "This is the first song of the list", Toast.LENGTH_LONG).show();
-            } else {
-                position -= 1;
-                current_song = list_song.get(position);
-                updateUIForCurrentSong();
-                playAudio();
-            }
+            playPretSong();
         });
 
         rotateAnimator = ObjectAnimator.ofFloat(songImage, "rotation", 0f, 360f);
@@ -104,12 +118,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         statusSong.setOnClickListener(view -> {
             if (check_play == 0) {
-                statusSong.setBackgroundResource(R.drawable.ic_toolbar);
+                statusSong.setImageResource(android.R.drawable.ic_media_pause);
                 playAudio();
                 check_play = 1;
             } else {
                 pauseAudio();
-                statusSong.setBackgroundResource(R.drawable.ic_play);
+                statusSong.setImageResource(android.R.drawable.ic_media_play);
                 check_play = 0;
             }
         });
@@ -136,6 +150,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void updateUIForCurrentSong() {
         songTitleView.setText(current_song.getName());
+        song_artist.setText(current_song.getArtistName());
         Glide.with(this)
                 .load(current_song.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_foreground)
@@ -143,6 +158,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     private void playAudio() {
+        stopAudio();
         Intent serviceIntent = new Intent(this, MusicService.class);
         serviceIntent.putExtra("audioUrl", current_song.getAudioUrl());
         startService(serviceIntent);
@@ -168,7 +184,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
             updateUIForCurrentSong();
             playAudio();
         } else {
-            Toast.makeText(this, "This is the last song in the list", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "This is the last Song in the list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void playPretSong() {
+        if (position > 0) {
+            position--;
+            current_song = list_song.get(position);
+            updateUIForCurrentSong();
+            playAudio();
+        } else {
+            Toast.makeText(this, "This is the first Song in the list", Toast.LENGTH_SHORT).show();
         }
     }
 

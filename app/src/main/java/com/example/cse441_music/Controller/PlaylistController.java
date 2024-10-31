@@ -35,8 +35,8 @@ public class PlaylistController {
         if (songs != null && !songs.isEmpty()) {
             for (Song song : songs) {
                 // Chơi nhạc (giả định bạn có phương thức `play` trong lớp `Song`)
-                System.out.println("Playing song: " + song.getName());
-                // song.play(); // Nếu bạn có phương thức phát nhạc trong lớp Song
+                System.out.println("Playing Song: " + song.getName());
+                // Song.play(); // Nếu bạn có phương thức phát nhạc trong lớp Song
             }
         } else {
             System.out.println("Playlist is empty or null.");

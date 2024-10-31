@@ -34,17 +34,17 @@ public class MusicPlayerController {
     public void playCurrentSong() {
         Song currentSong = getCurrentSong();
         if (currentSong != null) {
-            System.out.println("Playing song: " + currentSong.getName());
+            System.out.println("Playing Song: " + currentSong.getName());
             // Thực thi phương thức phát nhạc ở đây
         } else {
             // Nếu chưa có bài hát nào được chọn, có thể phát bài đầu tiên trong danh sách phát
             if (playlist.getSongs() != null && !playlist.getSongs().isEmpty()) {
                 currentIndex = 0; // Đặt chỉ số bài hát hiện tại là 0
                 currentSong = playlist.getSongs().get(currentIndex); // Lấy bài đầu tiên
-                System.out.println("Playing first song: " + currentSong.getName());
+                System.out.println("Playing first Song: " + currentSong.getName());
                 // Thực thi phương thức phát nhạc ở đây
             } else {
-                System.out.println("No song available to play.");
+                System.out.println("No Song available to play.");
             }
         }
     }
@@ -53,10 +53,10 @@ public class MusicPlayerController {
     public void stop() {
         Song currentSong = getCurrentSong();
         if (currentSong != null) {
-            System.out.println("Stopped song: " + currentSong.getName());
+            System.out.println("Stopped Song: " + currentSong.getName());
             // Thực thi phương thức dừng nhạc ở đây
         } else {
-            System.out.println("No song is currently playing.");
+            System.out.println("No Song is currently playing.");
         }
     }
 

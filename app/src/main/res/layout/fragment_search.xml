@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <!-- RecyclerView to display the song list -->
+    <!-- RecyclerView to display the Song list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

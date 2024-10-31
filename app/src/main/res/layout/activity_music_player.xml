@@ -89,7 +89,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/ic_toolbar"
+                android:background="@drawable/ic_play"
                 android:text="" />
 
                 <Button
@@ -99,6 +99,8 @@
                     android:text="Stop"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp" />
+
+
 
         </LinearLayout>
     </FrameLayout>

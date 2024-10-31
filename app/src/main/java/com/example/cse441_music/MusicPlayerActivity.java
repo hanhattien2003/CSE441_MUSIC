@@ -1,10 +1,14 @@
 package com.example.cse441_music;
 
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,16 +19,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+
+import com.example.cse441_music.BackgroundService.MusicService;
+
 public class MusicPlayerActivity extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayer;
     private String audioUrl;
-    private Handler handler = new Handler();
     private SeekBar seekBar;
     private TextView currentTime, totalDuration;
     private ImageView songImage;
     private ObjectAnimator rotateAnimator;
-    private Button pauseButton;
+    private Button statusSong;
+
+    private int check_play = 0;
+
+    private BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(MusicService.ACTION_UPDATE_SEEKBAR)) {
+                int currentPosition = intent.getIntExtra(MusicService.EXTRA_CURRENT_POSITION, 0);
+                int duration = intent.getIntExtra(MusicService.EXTRA_DURATION, 0);
+
+                seekBar.setMax(duration);
+                seekBar.setProgress(currentPosition);
+                currentTime.setText(formatTime(currentPosition));
+                totalDuration.setText(formatTime(duration));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +60,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         songImage = findViewById(R.id.song_image);
         TextView songTitleView = findViewById(R.id.song_title);
-        pauseButton = findViewById(R.id.pause_button);
+
+        statusSong = findViewById(R.id.pause_button);
         Button stopButton = findViewById(R.id.stop_button);
         seekBar = findViewById(R.id.seek_bar);
         currentTime = findViewById(R.id.current_time);
@@ -56,17 +79,35 @@ public class MusicPlayerActivity extends AppCompatActivity {
         rotateAnimator.setInterpolator(new LinearInterpolator());
         rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE); // Lặp vô hạn
 
-        mediaPlayer = new MediaPlayer();
 
-        playAudio();
-        pauseButton.setOnClickListener(v -> pauseAudio());
+        statusSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (check_play){
+                    case 0:
+                        playAudio();
+                        statusSong.setBackgroundResource(R.drawable.ic_toolbar);
+                        check_play = 1;
+                        break;
+                    case 1:
+                        pauseAudio();
+                        statusSong.setBackgroundResource(R.drawable.ic_play);
+                        check_play = 0;
+                    default:
+
+                }
+            }
+        });
+
         stopButton.setOnClickListener(v -> stopAudio());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser && mediaPlayer != null) {
-                    mediaPlayer.seekTo(progress);
+                if (fromUser) {
+                    Intent serviceIntent = new Intent(MusicPlayerActivity.this, MusicService.class);
+                    serviceIntent.putExtra("seekTo", progress);
+                    startService(serviceIntent);
                 }
             }
 
@@ -79,63 +120,30 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     private void playAudio() {
-        try {
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.setDataSource(audioUrl);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-
-                seekBar.setMax(mediaPlayer.getDuration());
-                totalDuration.setText(formatTime(mediaPlayer.getDuration()));
-
-                handler.postDelayed(updateSeekBar, 1000);
-
-
-                rotateAnimator.start();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Intent serviceIntent = new Intent(this, MusicService.class);
+        serviceIntent.putExtra("audioUrl", audioUrl);
+        startService(serviceIntent);
+        rotateAnimator.start();
     }
 
     private void pauseAudio() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            handler.removeCallbacks(updateSeekBar);
-            pauseButton.setBackgroundResource(R.drawable.ic_play);
+        if (check_play == 0) {
+            playAudio();
+
+        } else {
+            check_play = 1;
+            Intent serviceIntent = new Intent(this, MusicService.class);
+            serviceIntent.putExtra("pause", true);
+            startService(serviceIntent);
             rotateAnimator.pause();
-        }else {
-            mediaPlayer.start();
-            handler.postDelayed(updateSeekBar, 1000);
-            pauseButton.setBackgroundResource(R.drawable.ic_toolbar);
-            rotateAnimator.resume();
         }
+
     }
 
     private void stopAudio() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-            handler.removeCallbacks(updateSeekBar);
-            seekBar.setProgress(0);
-            currentTime.setText("00:00");
-            totalDuration.setText("00:00");
-
-            // Dừng xoay ảnh
-            rotateAnimator.end();
-        }
+        stopService(new Intent(this, MusicService.class));
+        rotateAnimator.end();
     }
-
-    private Runnable updateSeekBar = new Runnable() {
-        @Override
-        public void run() {
-            if (mediaPlayer != null) {
-                seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                currentTime.setText(formatTime(mediaPlayer.getCurrentPosition()));
-                handler.postDelayed(this, 1000);
-            }
-        }
-    };
 
     private String formatTime(int milliseconds) {
         int minutes = (milliseconds / 1000) / 60;
@@ -144,12 +152,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer != null) {
-            handler.removeCallbacks(updateSeekBar);
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(seekBarReceiver, new IntentFilter(MusicService.ACTION_UPDATE_SEEKBAR), Context.RECEIVER_NOT_EXPORTED);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(seekBarReceiver);
     }
 }

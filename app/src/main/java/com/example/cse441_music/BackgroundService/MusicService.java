@@ -1,7 +1,5 @@
 package com.example.cse441_music.BackgroundService;
 
-
-
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -15,6 +13,7 @@ public class MusicService extends Service {
     public static final String ACTION_UPDATE_SEEKBAR = "com.example.t1.UPDATE_SEEKBAR";
     public static final String EXTRA_CURRENT_POSITION = "current_position";
     public static final String EXTRA_DURATION = "duration";
+    public static final String ACTION_SONG_COMPLETED = "com.example.cse441_music.SONG_COMPLETED"; // Hành động cho bài hát hoàn thành
 
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -50,11 +49,6 @@ public class MusicService extends Service {
         return START_NOT_STICKY;
     }
 
-
-
-
-
-
     private void playAudio() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
@@ -64,7 +58,10 @@ public class MusicService extends Service {
                 mediaPlayer.start();
                 isPaused = false;
 
-                mediaPlayer.setOnCompletionListener(mp -> stopSelf());
+                mediaPlayer.setOnCompletionListener(mp -> {
+                    sendBroadcast(new Intent(ACTION_SONG_COMPLETED));
+                    stopSelf();
+                });
 
                 startSeekBarUpdates();
             } catch (Exception e) {
@@ -122,4 +119,3 @@ public class MusicService extends Service {
         }
     }
 }
-

@@ -19,17 +19,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-
-
 import com.example.cse441_music.BackgroundService.MusicService;
 import com.example.cse441_music.Model.Song;
 
 import java.util.ArrayList;
 
-
 public class MusicPlayerActivity extends AppCompatActivity {
 
-//    private String audioUrl, imageUrl, songTitle;
     Song current_song;
     private ArrayList<Song> list_song;
     private int position;
@@ -38,13 +34,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageView songImage;
     private ObjectAnimator rotateAnimator;
     private Button statusSong;
-
     private int check_play = 0;
-
-    TextView songTitleView;
-
+    private TextView songTitleView;
     private Button nextButton, preButton;
-
 
     private BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
         @Override
@@ -57,6 +49,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 seekBar.setProgress(currentPosition);
                 currentTime.setText(formatTime(currentPosition));
                 totalDuration.setText(formatTime(duration));
+            } else if (intent.getAction().equals(MusicService.ACTION_SONG_COMPLETED)) {
+                playNextSong();
             }
         }
     };
@@ -67,20 +61,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music_player);
         stopService(new Intent(this, MusicService.class));
 
-
-
         Intent intent = getIntent();
-//        songTitle = intent.getStringExtra("songTitle");
-//        imageUrl = intent.getStringExtra("imageUrl");
-//        audioUrl = intent.getStringExtra("audioUrl");
         list_song = intent.getParcelableArrayListExtra("songList");
         position = Integer.parseInt(intent.getStringExtra("songPositon"));
         current_song = list_song.get(position);
 
-
         songImage = findViewById(R.id.song_image);
         songTitleView = findViewById(R.id.song_title);
-
         statusSong = findViewById(R.id.pause_button);
         Button stopButton = findViewById(R.id.stop_button);
         seekBar = findViewById(R.id.seek_bar);
@@ -95,61 +82,35 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(v -> {
-            stopService(new Intent(this, MusicService.class));
-            current_song = list_song.get(position + 1);
-            songTitleView.setText(current_song.getName());
-            Glide.with(this)
-                    .load(current_song.getImageUrl())
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .into(songImage);
-
-            playAudio();
-            position += 1;
+            playNextSong();
         });
 
-
-        preButton = findViewById(R.id.next_button);
+        preButton = findViewById(R.id.pre_button);
         preButton.setOnClickListener(v -> {
-            if(position == 0) {
-                Toast.makeText(this, "this is first song of list", Toast.LENGTH_LONG).show();
+            if (position == 0) {
+                Toast.makeText(this, "This is the first song of the list", Toast.LENGTH_LONG).show();
             } else {
-                stopService(new Intent(this, MusicService.class));
-                current_song = list_song.get(position - 1);
-                songTitleView.setText(current_song.getName());
-                Glide.with(this)
-                        .load(current_song.getImageUrl())
-                        .placeholder(R.drawable.ic_launcher_foreground)
-                        .into(songImage);
-
-                playAudio();
                 position -= 1;
+                current_song = list_song.get(position);
+                updateUIForCurrentSong();
+                playAudio();
             }
         });
-
-
 
         rotateAnimator = ObjectAnimator.ofFloat(songImage, "rotation", 0f, 360f);
         rotateAnimator.setDuration(10000);
         rotateAnimator.setInterpolator(new LinearInterpolator());
-        rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE); // Lặp vô hạn
+        rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 
-
-        statusSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (check_play){
-                    case 0:
-                        statusSong.setBackgroundResource(R.drawable.ic_toolbar);
-                        playAudio();
-                        check_play = 1;
-                        break;
-                    case 1:
-                        pauseAudio();
-                        statusSong.setBackgroundResource(R.drawable.ic_play);
-                        check_play = 0;
-                    default:
-
-                }
+        statusSong.setOnClickListener(view -> {
+            if (check_play == 0) {
+                statusSong.setBackgroundResource(R.drawable.ic_toolbar);
+                playAudio();
+                check_play = 1;
+            } else {
+                pauseAudio();
+                statusSong.setBackgroundResource(R.drawable.ic_play);
+                check_play = 0;
             }
         });
 
@@ -173,12 +134,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
         });
     }
 
+    private void updateUIForCurrentSong() {
+        songTitleView.setText(current_song.getName());
+        Glide.with(this)
+                .load(current_song.getImageUrl())
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(songImage);
+    }
+
     private void playAudio() {
         Intent serviceIntent = new Intent(this, MusicService.class);
         serviceIntent.putExtra("audioUrl", current_song.getAudioUrl());
         startService(serviceIntent);
         rotateAnimator.start();
-
     }
 
     private void pauseAudio() {
@@ -186,7 +154,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         serviceIntent.putExtra("pause", true);
         startService(serviceIntent);
         rotateAnimator.pause();
-
     }
 
     private void stopAudio() {
@@ -194,27 +161,16 @@ public class MusicPlayerActivity extends AppCompatActivity {
         rotateAnimator.end();
     }
 
-//    private void playNextSong() {
-//        if (songList != null && !songList.isEmpty()) {
-//            currentSongIndex++;
-//            if (currentSongIndex >= songList.size()) {
-//                currentSongIndex = 0;
-//            }
-//            Song nextSong = songList.get(currentSongIndex);
-//            audioUrl = nextSong.getAudioUrl();
-//
-//            // Cập nhật giao diện
-//            String songTitle = nextSong.getName();
-//            String imageUrl = nextSong.getImageUrl();
-//            songTitleView.setText(songTitle);
-//            Glide.with(this)
-//                    .load(imageUrl)
-//                    .placeholder(R.drawable.ic_launcher_foreground)
-//                    .into(songImage);
-//
-//            playAudio();
-//        }
-//    }
+    private void playNextSong() {
+        if (position < list_song.size() - 1) {
+            position++;
+            current_song = list_song.get(position);
+            updateUIForCurrentSong();
+            playAudio();
+        } else {
+            Toast.makeText(this, "This is the last song in the list", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private String formatTime(int milliseconds) {
         int minutes = (milliseconds / 1000) / 60;
@@ -226,8 +182,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         registerReceiver(seekBarReceiver, new IntentFilter(MusicService.ACTION_UPDATE_SEEKBAR), Context.RECEIVER_NOT_EXPORTED);
+        registerReceiver(seekBarReceiver, new IntentFilter(MusicService.ACTION_SONG_COMPLETED), Context.RECEIVER_NOT_EXPORTED);
     }
-
 
     @Override
     protected void onStop() {

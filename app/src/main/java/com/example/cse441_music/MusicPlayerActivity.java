@@ -52,6 +52,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
+        stopService(new Intent(this, MusicService.class));
 
         Intent intent = getIntent();
         String songTitle = intent.getStringExtra("songTitle");
@@ -73,9 +74,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(songImage);
 
-        // Tạo ObjectAnimator để xoay tròn hình ảnh
+
         rotateAnimator = ObjectAnimator.ofFloat(songImage, "rotation", 0f, 360f);
-        rotateAnimator.setDuration(10000); // Thời gian xoay 10 giây
+        rotateAnimator.setDuration(10000);
         rotateAnimator.setInterpolator(new LinearInterpolator());
         rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE); // Lặp vô hạn
 
@@ -85,8 +86,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch (check_play){
                     case 0:
-                        playAudio();
                         statusSong.setBackgroundResource(R.drawable.ic_toolbar);
+                        playAudio();
                         check_play = 1;
                         break;
                     case 1:
@@ -124,19 +125,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
         serviceIntent.putExtra("audioUrl", audioUrl);
         startService(serviceIntent);
         rotateAnimator.start();
+
     }
 
     private void pauseAudio() {
-        if (check_play == 0) {
-            playAudio();
-
-        } else {
-            check_play = 1;
-            Intent serviceIntent = new Intent(this, MusicService.class);
-            serviceIntent.putExtra("pause", true);
-            startService(serviceIntent);
-            rotateAnimator.pause();
-        }
+        Intent serviceIntent = new Intent(this, MusicService.class);
+        serviceIntent.putExtra("pause", true);
+        startService(serviceIntent);
+        rotateAnimator.pause();
 
     }
 

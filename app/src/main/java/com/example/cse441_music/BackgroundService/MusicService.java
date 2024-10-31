@@ -50,6 +50,11 @@ public class MusicService extends Service {
         return START_NOT_STICKY;
     }
 
+
+
+
+
+
     private void playAudio() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();

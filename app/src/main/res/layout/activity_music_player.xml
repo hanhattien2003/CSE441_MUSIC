@@ -83,23 +83,46 @@
                 </LinearLayout>
 
 
-            <Button
-                android:id="@+id/pause_button"
-                android:layout_width="46dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
+            <LinearLayout
                 android:layout_marginTop="8dp"
-                android:background="@drawable/ic_play"
-                android:text="" />
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/stop_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stop"
+                    android:id="@+id/pre_button"
+                    android:layout_width="46dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp" />
+                    android:background="@drawable/ic_fast_rewind" />
 
+                <Button
+                    android:id="@+id/pause_button"
+                    android:layout_width="46dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_play"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/next_button"
+                    android:layout_width="46dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_fast_foward" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/stop_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stop"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp" />
 
 
         </LinearLayout>

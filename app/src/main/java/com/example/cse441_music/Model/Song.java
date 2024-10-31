@@ -1,6 +1,11 @@
 package com.example.cse441_music.Model;
 
-public class Song {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Song implements Parcelable {
     private String id;
     private String name;
     private String artistName;
@@ -20,6 +25,27 @@ public class Song {
         this.albumName = albumName;
 
     }
+
+    protected Song(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        artistName = in.readString();
+        albumName = in.readString();
+        audioUrl = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -67,5 +93,20 @@ public class Song {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(artistName);
+        parcel.writeString(albumName);
+        parcel.writeString(audioUrl);
+        parcel.writeString(imageUrl);
     }
 }

@@ -19,13 +19,15 @@ import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
 //import com.example.cse441_music.Database.DatabaseHelper;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
 //    private DatabaseHelper databaseHelper;
 
-    // Constructor không yêu cầu DatabaseHelper cho HomeFragment
+
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
@@ -46,6 +48,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
         Song song = songList.get(position);
+
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtistName());
         holder.albumNameTextView.setText(song.getAlbumName());
@@ -57,9 +60,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-            intent.putExtra("songTitle", song.getName());
-            intent.putExtra("imageUrl", song.getImageUrl());
-            intent.putExtra("audioUrl", song.getAudioUrl());
+//            intent.putExtra("songTitle", song.getName());
+//            intent.putExtra("imageUrl", song.getImageUrl());
+//            intent.putExtra("audioUrl", song.getAudioUrl());
+            intent.putExtra("songPositon", position+"");
+            intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
+
+
+
             holder.itemView.getContext().startActivity(intent);
         });
 

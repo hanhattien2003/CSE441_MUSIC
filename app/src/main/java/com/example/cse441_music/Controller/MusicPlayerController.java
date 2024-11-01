@@ -1,78 +1,92 @@
 package com.example.cse441_music.Controller;
 
-import com.example.cse441_music.Model.Playlist;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+
+import com.example.cse441_music.BackgroundService.MusicService;
 import com.example.cse441_music.Model.Song;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MusicPlayerController {
-    private Playlist playlist; // Danh sách phát
-    private int currentIndex = -1; // Vị trí của bài hát hiện tại (-1 có nghĩa là chưa có bài hát nào được chọn)
+    private Context context;
+    private ArrayList<Song> list_song;
+    private int position;
+    private Song current_song;
+    private boolean isPlaying = false;
+    private boolean playOne = false;
 
-    // Constructor nhận một Playlist
-    public MusicPlayerController(Playlist playlist) {
-        this.playlist = playlist;
+    public MusicPlayerController(Context context, ArrayList<Song> list_song, int position) {
+        this.context = context;
+        this.list_song = list_song;
+        this.position = position;
+        this.current_song = list_song.get(position);
     }
 
-    // Lấy bài hát hiện tại
     public Song getCurrentSong() {
-        if (currentIndex >= 0 && playlist.getSongs() != null && !playlist.getSongs().isEmpty()) {
-            return playlist.getSongs().get(currentIndex); // Lấy bài hát tại chỉ số currentIndex
-        }
-        return null; // Nếu không có bài hát nào
+        return current_song;
     }
 
-    // Đặt bài hát hiện tại
-    public void setCurrentSong(Song currentSong) {
-        List<Song> songs = playlist.getSongs();
-        if (songs != null && songs.contains(currentSong)) {
-            this.currentIndex = songs.indexOf(currentSong); // Cập nhật chỉ số hiện tại
-        }
+    public boolean isPlayOne() {
+        return playOne;
     }
 
-    // Phát bài hát hiện tại
-    public void playCurrentSong() {
-        Song currentSong = getCurrentSong();
-        if (currentSong != null) {
-            System.out.println("Playing Song: " + currentSong.getName());
-            // Thực thi phương thức phát nhạc ở đây
+    public void togglePlayOne() {
+        playOne = !playOne;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public ArrayList<Song> getSongList() {
+        return list_song;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void playAudio() {
+        stopAudio();
+        Intent serviceIntent = new Intent(context, MusicService.class);
+        serviceIntent.putExtra("audioUrl", current_song.getAudioUrl());
+        context.startService(serviceIntent);
+        isPlaying = true;
+    }
+
+    public void pauseAudio() {
+        Intent serviceIntent = new Intent(context, MusicService.class);
+        serviceIntent.putExtra("pause", true);
+        context.startService(serviceIntent);
+        isPlaying = false;
+    }
+
+    public void stopAudio() {
+        context.stopService(new Intent(context, MusicService.class));
+        isPlaying = false;
+    }
+
+    public void playNextSong() {
+        if (position < list_song.size() - 1) {
+            position++;
+            current_song = list_song.get(position);
+            playAudio();
         } else {
-            // Nếu chưa có bài hát nào được chọn, có thể phát bài đầu tiên trong danh sách phát
-            if (playlist.getSongs() != null && !playlist.getSongs().isEmpty()) {
-                currentIndex = 0; // Đặt chỉ số bài hát hiện tại là 0
-                currentSong = playlist.getSongs().get(currentIndex); // Lấy bài đầu tiên
-                System.out.println("Playing first Song: " + currentSong.getName());
-                // Thực thi phương thức phát nhạc ở đây
-            } else {
-                System.out.println("No Song available to play.");
-            }
+            Toast.makeText(context, "This is the last Song in the list", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Dừng bài hát đang phát
-    public void stop() {
-        Song currentSong = getCurrentSong();
-        if (currentSong != null) {
-            System.out.println("Stopped Song: " + currentSong.getName());
-            // Thực thi phương thức dừng nhạc ở đây
+    public void playPreviousSong() {
+        if (position > 0) {
+            position--;
+            current_song = list_song.get(position);
+            playAudio();
         } else {
-            System.out.println("No Song is currently playing.");
+            Toast.makeText(context, "This is the first Song in the list", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Chuyển đến bài hát tiếp theo
-    public void nextSong() {
-        if (playlist.getSongs() != null && !playlist.getSongs().isEmpty()) {
-            currentIndex = (currentIndex + 1) % playlist.getSongs().size(); // Di chuyển đến bài tiếp theo
-            playCurrentSong(); // Phát bài hát tiếp theo
-        }
-    }
 
-    // Trở về bài hát trước
-    public void previousSong() {
-        if (playlist.getSongs() != null && !playlist.getSongs().isEmpty()) {
-            currentIndex = (currentIndex - 1 + playlist.getSongs().size()) % playlist.getSongs().size(); // Di chuyển đến bài trước
-            playCurrentSong(); // Phát bài hát trước
-        }
-    }
 }

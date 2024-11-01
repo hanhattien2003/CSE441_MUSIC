@@ -49,7 +49,6 @@ public class MusicPlayerController {
     }
 
     public void playAudio() {
-        stopAudio();
         Intent serviceIntent = new Intent(context, MusicService.class);
         serviceIntent.putExtra("audioUrl", current_song.getAudioUrl());
         context.startService(serviceIntent);
@@ -70,6 +69,7 @@ public class MusicPlayerController {
 
     public void playNextSong() {
         if (position < list_song.size() - 1) {
+            stopAudio();
             position++;
             current_song = list_song.get(position);
             playAudio();
@@ -80,6 +80,7 @@ public class MusicPlayerController {
 
     public void playPreviousSong() {
         if (position > 0) {
+            stopAudio();
             position--;
             current_song = list_song.get(position);
             playAudio();

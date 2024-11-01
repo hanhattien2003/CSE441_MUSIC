@@ -46,8 +46,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 totalDuration.setText(formatTime(duration));
             } else if (intent.getAction().equals(MusicService.ACTION_SONG_COMPLETED)) {
                 if (musicPlayerController.isPlayOne()) {
+                    musicPlayerController.stopAudio();
                     musicPlayerController.playAudio();
                 } else {
+                    musicPlayerController.stopAudio();
                     musicPlayerController.playNextSong();
                     updateUIForCurrentSong();
                 }
@@ -82,6 +84,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         int position = Integer.parseInt(intent.getStringExtra("songPositon"));
 
         musicPlayerController = new MusicPlayerController(this, list_song, position);
+        musicPlayerController.stopAudio();
 
         songImage = findViewById(R.id.song_image);
         songTitleView = findViewById(R.id.song_title);
@@ -103,14 +106,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 musicPlayerController.playNextSong();
+                updateUIForCurrentSong();
             }
         });
 
         pre_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 musicPlayerController.playPreviousSong();
+                updateUIForCurrentSong();
             }
         });
 

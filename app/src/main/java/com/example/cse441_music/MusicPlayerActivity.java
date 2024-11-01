@@ -85,7 +85,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         songImage = findViewById(R.id.song_image);
         songTitleView = findViewById(R.id.song_title);
         statusSong = findViewById(R.id.pause_button);
-        Button stopButton = findViewById(R.id.stop_button);
+
         seekBar = findViewById(R.id.seek_bar);
         currentTime = findViewById(R.id.current_time);
         totalDuration = findViewById(R.id.total_duration);
@@ -138,7 +138,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
 
-        stopButton.setOnClickListener(v -> stopAudio());
+   
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -171,12 +171,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e2.getY() - e1.getY() > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
 
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("song_title", current_song.getName());
-                resultIntent.putExtra("song_artist", current_song.getArtistName());
-                resultIntent.putExtra("song_pic_url", current_song.getImageUrl());
-                setResult(RESULT_OK, resultIntent);
-                finish();
+                sendBackData();
                 return true;
             }
             return false;
@@ -255,7 +250,28 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+
         super.onStop();
         unregisterReceiver(seekBarReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        sendBackData();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendBackData();
+        super.onBackPressed();
+    }
+
+    private void sendBackData() {
+        Intent intent = new Intent();
+        intent.putExtra("songPositon", position+"");
+        intent.putParcelableArrayListExtra("songList", list_song);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.cse441_music.Adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +18,14 @@ import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
 //import com.example.cse441_music.Database.DatabaseHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
 //    private DatabaseHelper databaseHelper;
 
-    // Constructor không yêu cầu DatabaseHelper cho HomeFragment
+
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
@@ -46,6 +46,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
         Song song = songList.get(position);
+
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtistName());
         holder.albumNameTextView.setText(song.getAlbumName());
@@ -57,18 +58,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-            intent.putExtra("songTitle", song.getName());
-            intent.putExtra("imageUrl", song.getImageUrl());
-            intent.putExtra("audioUrl", song.getAudioUrl());
-            holder.itemView.getContext().startActivity(intent);
+            intent.putExtra("songPositon", position+"");
+            intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
+
+
+
+            ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
         });
 
         // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper
 //        if (databaseHelper != null) {
 //            holder.addToFavorite.setOnClickListener(v -> {
 //                List<String> favoriteIds = databaseHelper.getFavorites();
-//                if (!favoriteIds.contains(song.getId())) {
-//                    databaseHelper.addFavorite(song.getId());
+//                if (!favoriteIds.contains(Song.getId())) {
+//                    databaseHelper.addFavorite(Song.getId());
 //                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
 //                } else {
 //                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();

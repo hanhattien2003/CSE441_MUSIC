@@ -29,6 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/media_player_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:id="@+id/album_art"
+            android:id="@+id/small_window_pic"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_home"
@@ -59,7 +60,7 @@
             android:layout_marginEnd="8dp">
 
             <TextView
-                android:id="@+id/song_title"
+                android:id="@+id/small_window_song_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên bài hát"
@@ -69,7 +70,7 @@
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/song_artist"
+                android:id="@+id/small_window_song_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên tác giả"

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView recyclerViewSongs;
-    private SongAdapter songAdapter;
-    private List<Song> songList;
+    private RecyclerView recyclerViewTopYear, recyclerViewTopMonth, recyclerViewTopWeek;
+    private SongAdapter songAdapterYear, songAdapterMonth, songAdapterWeek;
+    private List<Song> songListYear, songListMonth, songListWeek;
     private ApiService apiService;
     private SongService songService;
 
@@ -35,41 +35,87 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Thiết lập RecyclerView
-        recyclerViewSongs = rootView.findViewById(R.id.recyclerViewSongs);
-        recyclerViewSongs.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Thiết lập RecyclerViews
+        recyclerViewTopYear = rootView.findViewById(R.id.recyclerViewTopYear);
+        recyclerViewTopMonth = rootView.findViewById(R.id.recyclerViewTopMonth);
+        recyclerViewTopWeek = rootView.findViewById(R.id.recyclerViewTopWeek);
 
-        // Khởi tạo danh sách bài hát
-        songList = new ArrayList<>();
-        songAdapter = new SongAdapter(songList);
-        recyclerViewSongs.setAdapter(songAdapter);
+        recyclerViewTopYear.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewTopMonth.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewTopWeek.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Khởi tạo danh sách bài hát và adapters
+        songListYear = new ArrayList<>();
+        songListMonth = new ArrayList<>();
+        songListWeek = new ArrayList<>();
+
+        songAdapterYear = new SongAdapter(songListYear);
+        songAdapterMonth = new SongAdapter(songListMonth);
+        songAdapterWeek = new SongAdapter(songListWeek);
+
+        recyclerViewTopYear.setAdapter(songAdapterYear);
+        recyclerViewTopMonth.setAdapter(songAdapterMonth);
+        recyclerViewTopWeek.setAdapter(songAdapterWeek);
 
         // Khởi tạo ApiService và SongService
         apiService = new ApiService();
         songService = new SongService();
 
         // Lấy danh sách bài hát
-        fetchTopTracks("your_query"); // Thay "your_query" bằng giá trị bạn muốn tìm kiếm
+        fetchTopTracksYear();
+        fetchTopTracksMonth();
+        fetchTopTracksWeek();
 
         return rootView;
     }
 
-    private void fetchTopTracks(String query) {
+    private void fetchTopTracksYear() {
         new Thread(() -> {
             try {
-                // Lấy danh sách bài hát theo query
-                String jsonResponse = apiService.fetchSongs(query, 0, 20); // Lấy 20 bài hát đầu tiên
+                String jsonResponse = apiService.fetchTopYear(0, 20); // Lấy 20 bài hát đầu tiên trong năm
                 List<Song> songs = songService.parseJson(jsonResponse);
-
-                // Cập nhật danh sách bài hát trong UI
                 getActivity().runOnUiThread(() -> {
-                    songList.clear();
-                    songList.addAll(songs);
-                    songAdapter.notifyDataSetChanged();
+                    songListYear.clear();
+                    songListYear.addAll(songs);
+                    songAdapterYear.notifyDataSetChanged();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error fetching top tracks", Toast.LENGTH_SHORT).show());
+                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error fetching top tracks of the year", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
+    private void fetchTopTracksMonth() {
+        new Thread(() -> {
+            try {
+                String jsonResponse = apiService.fetchTopMonth(0, 20); // Lấy 20 bài hát đầu tiên trong tháng
+                List<Song> songs = songService.parseJson(jsonResponse);
+                getActivity().runOnUiThread(() -> {
+                    songListMonth.clear();
+                    songListMonth.addAll(songs);
+                    songAdapterMonth.notifyDataSetChanged();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error fetching top tracks of the month", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
+    private void fetchTopTracksWeek() {
+        new Thread(() -> {
+            try {
+                String jsonResponse = apiService.fetchTopWeek(0, 20); // Lấy 20 bài hát đầu tiên trong tuần
+                List<Song> songs = songService.parseJson(jsonResponse);
+                getActivity().runOnUiThread(() -> {
+                    songListWeek.clear();
+                    songListWeek.addAll(songs);
+                    songAdapterWeek.notifyDataSetChanged();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error fetching top tracks of the week", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }

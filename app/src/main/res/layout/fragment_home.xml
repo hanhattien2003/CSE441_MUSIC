@@ -1,58 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- fragment_home.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.HomeFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-
-
-    <!-- Nội dung chính -->
-    <ScrollView
+    <!-- RecyclerView cho Top Year -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Year"
+        android:textSize="18sp"
+        android:paddingTop="8dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTopYear"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <!-- RecyclerView cho Top Month -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Month"
+        android:textSize="18sp"
+        android:paddingTop="16dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTopMonth"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"/>
 
-            <!-- Tuyển tập âm nhạc của tôi -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tuyển tập âm nhạc của tôi"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCollections"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Danh sách bài hát -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Danh sách bài hát"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewSongs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- RecyclerView cho Top Week -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Week"
+        android:textSize="18sp"
+        android:paddingTop="16dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTopWeek"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

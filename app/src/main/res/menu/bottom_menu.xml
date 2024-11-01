@@ -13,6 +13,6 @@
         android:icon="@drawable/ic_music_library"/>
     <item
         android:id="@+id/favorite_fragment"
-        android:title="Yêu thích"
-        android:icon="@drawable/ic_favorite"/>
+        android:title="Bộ Sưu Tập"
+        android:icon="@drawable/ic_audio_track"/>
 </menu>

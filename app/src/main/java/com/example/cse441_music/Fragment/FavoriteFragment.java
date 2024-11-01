@@ -145,27 +145,76 @@ public class FavoriteFragment extends Fragment {
 //        favoriteAdapter.notifyDataSetChanged();
 //    }
 
+//    Ham nay ok s2
+//    private void loadSongs() {
+//        ContentResolver contentResolver = requireContext().getContentResolver();
+//        Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI; // Chỉ sử dụng EXTERNAL_CONTENT_URI
+//
+//        String[] projection = {
+//                MediaStore.Audio.Media._ID,
+//                MediaStore.Audio.Media.TITLE,
+//                MediaStore.Audio.Media.ARTIST,
+//                MediaStore.Audio.Media.ALBUM,
+//                MediaStore.Audio.Media.DATA
+//        };
+//
+//        // Lọc để loại trừ các thư mục không mong muốn
+//        String selection = MediaStore.Audio.Media.DATA + " NOT LIKE ? AND " +
+//                MediaStore.Audio.Media.DATA + " NOT LIKE ? AND " +
+//                MediaStore.Audio.Media.DATA + " NOT LIKE ? ";
+//
+//        String[] selectionArgs = new String[]{
+//                "%/Ringtones/%",   // Loại trừ thư mục nhạc chuông
+//                "%/Alarms/%",      // Loại trừ thư mục âm thanh báo thức
+//                "%/Notifications/%" // Loại trừ thư mục âm thanh thông báo
+//        };
+//
+//        Cursor cursor = contentResolver.query(songUri, projection, selection, selectionArgs, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//            do {
+//                String id = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+//                String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+//                String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+//                String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+//                String data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+//
+//                Song song = new Song(id, title, artist, data, null, album);
+//                songList.add(song);
+//            } while (cursor.moveToNext());
+//            cursor.close();
+//        }
+//
+//        // Kiểm tra nếu danh sách rỗng, hiển thị thông báo
+//        if (songList.isEmpty()) {
+//            emptyTextView.setVisibility(View.VISIBLE);
+//        } else {
+//            emptyTextView.setVisibility(View.GONE);
+//        }
+//
+//        favoriteAdapter.notifyDataSetChanged();
+//    }
+
     private void loadSongs() {
         ContentResolver contentResolver = requireContext().getContentResolver();
-        Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI; // Chỉ sử dụng EXTERNAL_CONTENT_URI
+        Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.DATA
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.ALBUM_ID // Lấy ALBUM_ID
         };
 
-        // Lọc để loại trừ các thư mục không mong muốn
         String selection = MediaStore.Audio.Media.DATA + " NOT LIKE ? AND " +
                 MediaStore.Audio.Media.DATA + " NOT LIKE ? AND " +
                 MediaStore.Audio.Media.DATA + " NOT LIKE ? ";
 
         String[] selectionArgs = new String[]{
-                "%/Ringtones/%",   // Loại trừ thư mục nhạc chuông
-                "%/Alarms/%",      // Loại trừ thư mục âm thanh báo thức
-                "%/Notifications/%" // Loại trừ thư mục âm thanh thông báo
+                "%/Ringtones/%",
+                "%/Alarms/%",
+                "%/Notifications/%"
         };
 
         Cursor cursor = contentResolver.query(songUri, projection, selection, selectionArgs, null);
@@ -176,8 +225,13 @@ public class FavoriteFragment extends Fragment {
                 String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
                 String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
                 String data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+                String albumId = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 
-                Song song = new Song(id, title, artist, data, null, album);
+                // Lấy đường dẫn ảnh bìa album
+                String albumArtUri = getAlbumArtUri(albumId);
+
+                // Tạo đối tượng Song với albumArtUri
+                Song song = new Song(id, title, artist, data, albumArtUri, album);
                 songList.add(song);
             } while (cursor.moveToNext());
             cursor.close();
@@ -191,6 +245,11 @@ public class FavoriteFragment extends Fragment {
         }
 
         favoriteAdapter.notifyDataSetChanged();
+    }
+
+    // Hàm lấy URI bìa album
+    private String getAlbumArtUri(String albumId) {
+        return Uri.parse("content://media/external/audio/albumart/" + albumId).toString();
     }
 
 

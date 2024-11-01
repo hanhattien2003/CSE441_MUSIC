@@ -1,5 +1,6 @@
 package com.example.cse441_music.Adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,15 +58,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-//            intent.putExtra("songTitle", Song.getName());
-//            intent.putExtra("imageUrl", Song.getImageUrl());
-//            intent.putExtra("audioUrl", Song.getAudioUrl());
             intent.putExtra("songPositon", position+"");
             intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
 
 
 
-            holder.itemView.getContext().startActivity(intent);
+            ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
         });
 
         // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper

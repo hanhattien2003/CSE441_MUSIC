@@ -55,6 +55,7 @@ public class MusicService extends Service {
             try {
                 mediaPlayer.setDataSource(audioUrl);
                 mediaPlayer.prepare();
+                mediaPlayer.setLooping(true);
                 mediaPlayer.start();
                 isPaused = false;
 

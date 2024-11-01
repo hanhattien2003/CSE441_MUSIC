@@ -16,10 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.cse441_music.BackgroundService.MusicService;
 import com.example.cse441_music.Model.Song;
+
+
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+
 
 import java.util.ArrayList;
 
@@ -37,6 +43,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private int check_play = 0;
     private boolean play_one = false;
+
+    private GestureDetectorCompat gestureDetector;
 
 
     private BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
@@ -66,6 +74,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
         stopService(new Intent(this, MusicService.class));
+
+        gestureDetector = new GestureDetectorCompat(this, new SwipeDownGestureListener());
 
         Intent intent = getIntent();
         list_song = intent.getParcelableArrayListExtra("songList");
@@ -147,6 +157,37 @@ public class MusicPlayerActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
+    private class SwipeDownGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getY() - e1.getY() > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("song_title", current_song.getName());
+                resultIntent.putExtra("song_artist", current_song.getArtistName());
+                resultIntent.putExtra("song_pic_url", current_song.getImageUrl());
+                setResult(RESULT_OK, resultIntent);
+                finish();
+                return true;
+            }
+            return false;
+        }
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        unregisterReceiver(seekBarReceiver);
+//    }
 
     private void updateUIForCurrentSong() {
         songTitleView.setText(current_song.getName());

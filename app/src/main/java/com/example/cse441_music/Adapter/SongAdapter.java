@@ -16,25 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
-//import com.example.cse441_music.Database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
-//    private DatabaseHelper databaseHelper;
-
 
     public SongAdapter(List<Song> songList) {
         this.songList = songList;
     }
-
-    // Constructor cho FavoriteFragment, bao gồm DatabaseHelper
-//    public SongAdapter(List<Song> songList, DatabaseHelper databaseHelper) {
-//        this.songList = songList;
-//        this.databaseHelper = databaseHelper;
-//    }
 
     @NonNull
     @Override
@@ -61,23 +52,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             intent.putExtra("songPositon", position+"");
             intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
 
-
-
             ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
         });
-
-        // Xử lý sự kiện nút yêu thích nếu có DatabaseHelper
-//        if (databaseHelper != null) {
-//            holder.addToFavorite.setOnClickListener(v -> {
-//                List<String> favoriteIds = databaseHelper.getFavorites();
-//                if (!favoriteIds.contains(Song.getId())) {
-//                    databaseHelper.addFavorite(Song.getId());
-//                    Toast.makeText(v.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(v.getContext(), "Bài hát đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
     }
 
     @Override

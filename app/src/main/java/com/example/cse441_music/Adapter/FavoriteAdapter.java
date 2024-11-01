@@ -66,7 +66,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.SongVi
     public static class SongViewHolder extends RecyclerView.ViewHolder {
         TextView songName, artistName, albumName;
         ImageView songImage;
-        ImageButton addToFavorite;
+//        ImageButton addToFavorite;
 
         public SongViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,7 +74,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.SongVi
             artistName = itemView.findViewById(R.id.artistName);
             albumName = itemView.findViewById(R.id.albumNameTextView);
             songImage = itemView.findViewById(R.id.songImage);
-            addToFavorite = itemView.findViewById(R.id.addToFavorite);
+//            addToFavorite = itemView.findViewById(R.id.addToFavorite);
         }
     }
 }

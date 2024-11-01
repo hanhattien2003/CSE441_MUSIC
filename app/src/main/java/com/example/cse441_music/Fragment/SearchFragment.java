@@ -73,7 +73,7 @@ public class SearchFragment extends Fragment {
         editTextSearch = view.findViewById(R.id.editTextSearch);
 
         songList = new ArrayList<>();
-        adapter = new SongAdapter(songList);
+        adapter = new SongAdapter(getContext(), songList);
         recyclerView.setAdapter(adapter);
 
         songController = new SongController();

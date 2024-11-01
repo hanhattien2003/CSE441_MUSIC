@@ -46,11 +46,12 @@
 
     </LinearLayout>
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/addToFavorite"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/ic_favorite"-->
-<!--        app:tint="@color/light_blue_900"-->
-<!--        android:background="@color/white"/>-->
+    <ImageButton
+        android:id="@+id/img_dowload"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:src="@android:drawable/stat_sys_download"
+        app:tint="@color/light_blue_900" />
 </LinearLayout>

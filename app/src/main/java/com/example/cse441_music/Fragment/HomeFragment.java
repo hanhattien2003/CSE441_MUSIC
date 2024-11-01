@@ -49,9 +49,9 @@ public class HomeFragment extends Fragment {
         songListMonth = new ArrayList<>();
         songListWeek = new ArrayList<>();
 
-        songAdapterYear = new SongAdapter(songListYear);
-        songAdapterMonth = new SongAdapter(songListMonth);
-        songAdapterWeek = new SongAdapter(songListWeek);
+        songAdapterYear = new SongAdapter(getContext(), songListYear);
+        songAdapterMonth = new SongAdapter(getContext(), songListMonth);
+        songAdapterWeek = new SongAdapter(getContext(), songListWeek);
 
         recyclerViewTopYear.setAdapter(songAdapterYear);
         recyclerViewTopMonth.setAdapter(songAdapterMonth);

@@ -74,8 +74,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             artistName = itemView.findViewById(R.id.artistName);
             albumNameTextView = itemView.findViewById(R.id.albumNameTextView);
             songImage = itemView.findViewById(R.id.songImage);
-            addToFavorite = itemView.findViewById(R.id.addToFavorite);
-
         }
     }
 }

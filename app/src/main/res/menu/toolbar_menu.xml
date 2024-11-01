@@ -5,11 +5,13 @@
         android:id="@+id/action_notification"
         android:icon="@drawable/ic_notification"
         android:title="Notifications"
+        android:iconTint="@color/white"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_user"
         android:icon="@drawable/ic_user"
+        android:iconTint="@color/white"
         android:title="User"
         app:showAsAction="ifRoom" />
 </menu>

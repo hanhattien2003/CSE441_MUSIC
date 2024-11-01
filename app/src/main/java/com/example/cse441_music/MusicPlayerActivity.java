@@ -46,7 +46,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private GestureDetectorCompat gestureDetector;
 
-
     private BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -64,7 +63,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 } else {
                     playNextSong();
                 }
-
             }
         }
     };
@@ -138,8 +136,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
 
-   
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -177,13 +173,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             return false;
         }
     }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        unregisterReceiver(seekBarReceiver);
-//    }
-
+    
     private void updateUIForCurrentSong() {
         songTitleView.setText(current_song.getName());
         song_artist.setText(current_song.getArtistName());

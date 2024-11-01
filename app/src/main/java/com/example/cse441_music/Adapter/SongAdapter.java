@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
 import com.example.cse441_music.MusicPlayerActivity;
@@ -19,6 +20,7 @@ import com.example.cse441_music.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private List<Song> songList;
@@ -73,6 +75,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             albumNameTextView = itemView.findViewById(R.id.albumNameTextView);
             songImage = itemView.findViewById(R.id.songImage);
             addToFavorite = itemView.findViewById(R.id.addToFavorite);
+
         }
     }
 }

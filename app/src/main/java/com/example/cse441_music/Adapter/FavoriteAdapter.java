@@ -1,6 +1,8 @@
 package com.example.cse441_music.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.cse441_music.Model.Song;
+import com.example.cse441_music.MusicPlayerActivity;
 import com.example.cse441_music.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.SongViewHolder> {
@@ -36,7 +43,19 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.SongVi
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtistName());
         holder.albumName.setText(song.getAlbumName());
-        // Set thêm hình ảnh và các chi tiết khác nếu có
+
+        Glide.with(holder.itemView.getContext())
+                .load(song.getImageUrl())
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(holder.songImage);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
+            intent.putExtra("songPositon", position+"");
+            intent.putParcelableArrayListExtra("songList", new ArrayList<>(songList));
+
+            ((Activity) holder.itemView.getContext()).startActivityForResult(intent, 1);
+        });
     }
 
     @Override

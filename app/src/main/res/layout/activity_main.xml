@@ -11,12 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/light_blue_900"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:title="Pophits"
-        app:titleTextColor="@color/white"
-        app:menu="@menu/toolbar_menu"
-        tools:ignore="MissingConstraints" />
+    android:elevation="4dp"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:title="Pophits"
+    app:titleTextColor="@color/white"
+    app:menu="@menu/toolbar_menu"
+    tools:ignore="MissingConstraints" />
+
 
 
     <FrameLayout

@@ -12,18 +12,35 @@ public class Song implements Parcelable {
     private String albumName;
     private String audioUrl;
     private String imageUrl;
+    private String audiodownload;
+    private int audiodownload_allowed;  // 0 nếu không cho phép download
+
 
     public Song() {
+        this.audiodownload = "";
+        this.audiodownload_allowed = 0;
     }
 
-    public Song(String id, String name, String artistName, String audioUrl, String imageUrl, String albumName) {
+    public Song(String id, String name, String artistName, String audioUrl, String imageUrl,
+                String albumName, String audiodownload, int audiodownload_allowed) {
         this.id = id;
         this.name = name;
         this.artistName = artistName;
         this.audioUrl = audioUrl;
         this.imageUrl = imageUrl;
         this.albumName = albumName;
+        this.audiodownload = audiodownload;
+        this.audiodownload_allowed = audiodownload_allowed;
+    }
 
+    public Song(String id, String name, String artistName, String audioUrl, String imageUrl,
+                String albumName) {
+        this.id = id;
+        this.name = name;
+        this.artistName = artistName;
+        this.audioUrl = audioUrl;
+        this.imageUrl = imageUrl;
+        this.albumName = albumName;
     }
 
     protected Song(Parcel in) {
@@ -33,6 +50,8 @@ public class Song implements Parcelable {
         albumName = in.readString();
         audioUrl = in.readString();
         imageUrl = in.readString();
+        audiodownload = in.readString();
+        audiodownload_allowed = in.readInt();
     }
 
     public static final Creator<Song> CREATOR = new Creator<Song>() {
@@ -47,6 +66,7 @@ public class Song implements Parcelable {
         }
     };
 
+    // Getters
     public String getId() {
         return id;
     }
@@ -71,6 +91,15 @@ public class Song implements Parcelable {
         return albumName;
     }
 
+    public String getAudiodownload() {
+        return audiodownload;
+    }
+
+    public int getAudiodownload_allowed() {
+        return audiodownload_allowed;
+    }
+
+    // Setters
     public void setId(String id) {
         this.id = id;
     }
@@ -79,21 +108,7 @@ public class Song implements Parcelable {
         this.name = name;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
-    }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
-    }
-
-    public void setAudioUrl(String audioUrl) {
-        this.audioUrl = audioUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     @Override
     public int describeContents() {
@@ -108,5 +123,7 @@ public class Song implements Parcelable {
         parcel.writeString(albumName);
         parcel.writeString(audioUrl);
         parcel.writeString(imageUrl);
+        parcel.writeString(audiodownload);
+        parcel.writeInt(audiodownload_allowed);
     }
 }

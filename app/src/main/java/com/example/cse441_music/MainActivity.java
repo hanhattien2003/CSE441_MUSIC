@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 btn_next.setOnClickListener(v -> playNextSong());
                 btn_play_pause.setOnClickListener(v -> togglePlayPause());
 
+
             }
     }
     private void playNextSong() {

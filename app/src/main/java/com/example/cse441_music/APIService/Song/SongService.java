@@ -15,36 +15,6 @@ import java.util.List;
 public class SongService {
     private ApiService apiService;
 
-    public Song getSongById(String id) {
-        try {
-            // Xây dựng URL để lấy thông tin bài hát theo ID
-            String apiUrl = "https://api.jamendo.com/v3.0/tracks/" + id + "?client_id=" + ApiService.CLIENT_ID;
-
-            // Gọi API và lấy dữ liệu JSON
-            String response = apiService.fetchData(apiUrl);
-
-            // Phân tích dữ liệu JSON
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray resultsArray = jsonObject.getJSONArray("results");
-
-            if (resultsArray.length() > 0) {
-                JSONObject songJson = resultsArray.getJSONObject(0);
-
-                // Lấy thông tin từ JSON và tạo đối tượng Song
-                Song song = new Song();
-                song.setId(songJson.getString("id"));
-                song.setName(songJson.getString("name"));
-                song.setAlbumName(songJson.getString("album_name"));
-                song.setArtistName(songJson.getString("artist_name"));
-                // (Gán các thuộc tính khác nếu cần)
-
-                return song;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     public List<Song> parseJson(String json) throws JSONException {
         List<Song> songList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(json);
@@ -56,15 +26,17 @@ public class SongService {
             String name = track.getString("name");
             String artistName = track.getString("artist_name");
             String audioUrl = track.getString("audio");
-            String imageUrl = track.getString("image"); // Lấy URL của ảnh bài hát
-            String albumName = track.optString("album_name"); // Thêm tên album
+            String imageUrl = track.getString("image");
+            String albumName = track.optString("album_name");
+            String audiodownload = track.optString("audiodownload", "");
+            int audiodownload_allowed = track.optBoolean("audiodownload_allowed", false) ? 1 : 0;
 
-
-            songList.add(new Song(id, name, artistName, audioUrl, imageUrl, albumName)); // Thêm bài hát vào danh sách
+            songList.add(new Song(id, name, artistName, audioUrl, imageUrl, albumName, audiodownload, audiodownload_allowed));
         }
 
-        return songList; // Trả về danh sách bài hát
+        return songList;
     }
+
 
     public static List<Album> parseAlbumsJson(String json) throws Exception {
         JSONObject root = new JSONObject(json);

@@ -13,7 +13,6 @@ public class ApiService {
     private static final String BASE_URL = "https://api.jamendo.com/v3.0";
     public static final String CLIENT_ID = "900dafad";
 
-    // Phương thức để xây dựng URL tìm kiếm bài hát theo query
     public String buildSongUrl(String query, int page, int limit) {
         StringBuilder apiUrl = new StringBuilder(BASE_URL + "/tracks/?client_id=" + CLIENT_ID);
         apiUrl.append("&limit=").append(limit);
@@ -26,7 +25,6 @@ public class ApiService {
         return apiUrl.toString();
     }
 
-    // Phương thức lấy dữ liệu từ API
     public String fetchData(String apiUrl) throws Exception {
         URL url = new URL(apiUrl);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -43,11 +41,6 @@ public class ApiService {
         return result.toString();
     }
 
-    // Phương thức lấy bài hát theo truy vấn với phân trang
-    public String fetchSongs(String query, int page, int limit) throws Exception {
-        String apiUrl = buildSongUrl(query, page, limit);
-        return fetchData(apiUrl);
-    }
 
     // Phương thức lấy danh sách album với phân trang
     public String fetchAlbums(int page, int limit) throws Exception {

@@ -26,13 +26,8 @@ public class HomeFragment extends Fragment {
     private ApiService apiService;
     private SongService songService;
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Thiết lập RecyclerViews
